@@ -1,3 +1,9 @@
-# .husky/pre-commit
-prettier $(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g') --write --ignore-unknown
+#!/bin/sh
+
+echo "🎨 Formatting..."
+pnpm exec prettier . --write || exit 1
+
+echo "🔍 Linting..."
+pnpm lint || exit 1
+
 git update-index --again
