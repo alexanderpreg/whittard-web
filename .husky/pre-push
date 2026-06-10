@@ -1,0 +1,10 @@
+#!/bin/sh
+# Detectar la rama actual
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if [ "$branch" = "main" ]; then
+  echo "⚡ Estás en main → corriendo build..."
+  pnpm build || exit 1
+else
+  echo "✅ Estás en la rama $branch → no corremos build, solo push normal"
+fi

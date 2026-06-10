@@ -1,0 +1,10 @@
+services:
+  whittard:
+    build:
+      context: ../../
+      dockerfile: docker/production/prod.Dockerfile
+    image: whittard
+    container_name: whittard
+    restart: unless-stopped
+    ports:
+      - '3004:3000'
