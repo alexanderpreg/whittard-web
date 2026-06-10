@@ -4,6 +4,6 @@ echo "🎨 Formatting..."
 pnpm exec prettier . --write || exit 1
 
 echo "🔍 Linting..."
-pnpm lint || exit 1
+pnpm lint:fix || exit 1
 
 git update-index --again
