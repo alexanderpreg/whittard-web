@@ -10,7 +10,7 @@ export default definePrompt({
     scope: 'Selecciona el módulo afectado (opcional):',
     customScope: 'Escribe un scope personalizado:',
     subject: 'Describe brevemente el cambio:\n',
-    body: 'Describe el cambio con más detalle (opcional). Usa "|" para crear una nueva línea:\n',
+    body: 'Describe el cambio con más detalle (opcional, Enter para omitir). Usa "|" para crear una nueva línea:\n',
     breaking: 'Describe los BREAKING CHANGES (opcional). Usa "|" para crear una nueva línea:\n',
     footerPrefixesSelect: 'Selecciona el tipo de referencia o issue relacionado (opcional):',
     customFooterPrefix: 'Ingresa un prefijo personalizado:',
