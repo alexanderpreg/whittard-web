@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "[1/1] Validating Conventional Commit format..."
+
+pnpm commitlint --edit "$1"

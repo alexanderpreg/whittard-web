@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Whittard Web
+
+Frontend application built with Next.js and TypeScript.
+
+## Overview
+
+This project follows a feature-based architecture focused on scalability, maintainability, and separation of concerns.
+
+### Core Technologies
+
+- Next.js 16
+- React
+- TypeScript
+- Tailwind CSS
+- Zustand
+- ESLint
+- Prettier
+- Husky
+- Commitlint
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- pnpm
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Run Development Server
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application will be available at:
 
-## Learn More
+```text
+http://localhost:3000
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Available Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Development
 
-## Deploy on Vercel
+```bash
+pnpm dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Starts the development server.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Build
+
+```bash
+pnpm build
+```
+
+Creates a production build.
+
+### Start Production Server
+
+```bash
+pnpm start
+```
+
+Runs the production build.
+
+### Lint
+
+```bash
+pnpm lint
+```
+
+Runs ESLint validation.
+
+### Type Check
+
+```bash
+pnpm typecheck
+```
+
+Runs TypeScript validation.
+
+---
+
+## Project Documentation
+
+Additional documentation is available in the `docs` directory.
+
+| Document        | Description                                    |
+| --------------- | ---------------------------------------------- |
+| architecture.md | Frontend architecture and project structure    |
+| git-workflow.md | Git workflow, commit conventions, hooks and CI |
+| deployment.md   | Deployment and release process                 |
+
+---
+
+## Code Quality
+
+The project includes automated validation using:
+
+- ESLint
+- Prettier
+- Husky
+- Commitlint
+- TypeScript
+
+Validation runs automatically through Git Hooks and Continuous Integration workflows.
+
+---
+
+## License
+
+Private project.
