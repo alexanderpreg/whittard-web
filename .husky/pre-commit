@@ -1,9 +1,9 @@
 #!/bin/sh
 
-echo "🎨 Formatting..."
+echo "[1/2] Formatting source files..."
 pnpm exec prettier . --write || exit 1
 
-echo "🔍 Linting..."
+echo "[2/2] Running lint validation..."
 pnpm lint:fix || exit 1
 
 git update-index --again

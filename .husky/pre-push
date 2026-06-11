@@ -1,7 +1,7 @@
 #!/bin/sh
 
-echo "🧠 Type checking..."
+echo "[1/2] Running TypeScript type validation..."
 pnpm typecheck || exit 1
 
-echo "🏗️ Building..."
+echo "[2/2] Building application..."
 pnpm build || exit 1
