@@ -63,8 +63,8 @@ export default definePrompt({
     },
     {
       value: 'ci',
-      name: '⚙️ ci: Configuración de CI/CD',
-      emoji: '⚙️',
+      name: '🤖 ci: Configuración de CI/CD',
+      emoji: '🤖',
     },
     {
       value: 'chore',
@@ -87,6 +87,11 @@ export default definePrompt({
     'orders',
     'shared',
     'ui',
+    'app',
+    'providers',
+    'store',
+    'styles',
+    'config',
     'docs',
     'docker',
     'deployment',
@@ -97,17 +102,17 @@ export default definePrompt({
   useEmoji: true,
 
   emojiAlign: 'center',
-
+  skipQuestions: ['footer', 'breaking', 'footerPrefix'],
   allowCustomScopes: true,
   allowEmptyScopes: true,
 
   customScopesAlias: 'personalizado',
-  emptyScopesAlias: 'ninguno',
-
+  emptyScopesAlias: 'sin scope',
   markBreakingChangeMode: false,
 
   allowBreakingChanges: ['feat', 'fix'],
-
+  enableMultipleScopes: true,
+  scopeEnumSeparator: ',',
   breaklineNumber: 100,
 
   issuePrefixes: [
@@ -119,8 +124,9 @@ export default definePrompt({
 
   allowCustomIssuePrefix: true,
   allowEmptyIssuePrefix: true,
-
+  customScopesAlign: 'bottom',
   confirmColorize: true,
-
+  // maxSubjectLength: 100,
+  // minSubjectLength: 5,
   useAI: false,
 });
