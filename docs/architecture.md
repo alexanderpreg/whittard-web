@@ -2,9 +2,9 @@
 
 ## Overview
 
-This project follows a feature-based architecture focused on scalability, maintainability, and separation of concerns.
+This project follows a Module-Based Architecture focused on scalability, maintainability, separation of concerns, and domain isolation.
 
-Business domains are isolated into independent modules while reusable resources remain centralized in a shared layer.
+Business logic is organized into independent modules, while reusable UI, utilities, and infrastructure concerns are centralized in dedicated layers.
 
 ---
 
@@ -13,11 +13,12 @@ Business domains are isolated into independent modules while reusable resources 
 ```text
 src
 │
-├── app/          # Routes, layouts and pages
-├── modules/      # Business features
-├── shared/       # Shared resources
+├── app/          # Routes, layouts, pages and route groups
+├── modules/      # Business domains
+├── shared/       # Shared UI resources
+├── lib/          # Reusable logic and utilities
 ├── providers/    # Global providers
-├── store/        # Global state
+├── store/        # Global state management
 ├── config/       # Application configuration
 ├── constants/    # Global constants
 ├── types/        # Shared types
@@ -28,21 +29,35 @@ src
 
 ## App Layer
 
-The `app` directory contains routing, layouts, loading states and error boundaries.
+The `app` directory contains routing and page composition.
 
 Responsibilities:
 
 - Route management
 - Layout composition
-- Error handling
+- Error boundaries
 - Loading states
 - Route groups
+- Metadata configuration
+
+Example:
+
+```text
+app
+│
+├── (public)
+├── (private)
+├── layout.tsx
+├── loading.tsx
+├── error.tsx
+└── not-found.tsx
+```
 
 ---
 
-## Feature Modules
+## Business Modules
 
-Business logic is grouped by domain.
+Business logic is organized by domain.
 
 ```text
 modules
@@ -55,10 +70,10 @@ modules
 └── orders
 ```
 
-Each module may contain:
+Each module owns its functionality and can contain:
 
 ```text
-feature
+module
 │
 ├── components
 ├── hooks
@@ -70,42 +85,168 @@ feature
 └── utils
 ```
 
+Example:
+
+```text
+modules
+└── cart
+    ├── components
+    ├── hooks
+    ├── services
+    ├── store
+    ├── schemas
+    ├── types
+    ├── constants
+    └── utils
+```
+
 Benefits:
 
-- Better scalability
 - Clear ownership
 - Reduced coupling
 - Easier maintenance
+- Independent evolution of domains
+- Better scalability
+- Strong business boundaries
 
 ---
 
 ## Shared Layer
 
-Contains reusable resources shared across the application.
+Contains reusable UI resources shared across the application.
 
 ```text
 shared
 │
 ├── components
+│   ├── custom-ui
+│   └── shadcn-ui
+│
 ├── layouts
+└── icons
+```
+
+Examples:
+
+- Button
+- Input
+- Modal
+- Container
+- Heading
+- Skeleton
+- EmptyState
+
+Layouts:
+
+```text
+shared
+└── layouts
+    ├── StoreLayout
+    ├── AdminLayout
+    └── AuthLayout
+```
+
+The shared layer should only contain reusable presentation resources and should not contain business logic.
+
+---
+
+## Library Layer
+
+Contains reusable application logic independent of business domains.
+
+```text
+lib
+│
+├── api
+├── adapters
+├── validators
+├── formatters
+├── mappers
 ├── hooks
 ├── utils
-├── types
-├── constants
-└── icons
+└── services
+```
+
+Examples:
+
+### Utils
+
+```ts
+formatCurrency();
+formatDate();
+capitalize();
+```
+
+### Hooks
+
+```ts
+useDebounce();
+useMediaQuery();
+useIntersectionObserver();
+```
+
+### Adapters
+
+```ts
+meta - pixel.ts;
+niubiz.ts;
+google - tag - manager.ts;
+```
+
+### API
+
+```ts
+axios.ts;
+interceptors.ts;
+```
+
+Responsibilities:
+
+- Reusable logic
+- Third-party integrations
+- Data transformation
+- Formatting
+- Validation
+- API abstraction
+
+---
+
+## Constants
+
+Global application constants are centralized in:
+
+```text
+constants
+│
+├── routes.ts
+├── roles.ts
+├── permissions.ts
+└── storage-keys.ts
+```
+
+Domain-specific constants should remain inside their corresponding module.
+
+Example:
+
+```text
+modules
+└── checkout
+    └── constants
+        ├── payment-methods.ts
+        └── order-status.ts
 ```
 
 ---
 
 ## Data Flow
 
-Application data follows a layered flow.
+Application data follows a layered architecture.
 
 ```text
 Page
  │
  ▼
-Component
+Module Component
  │
  ▼
 Custom Hook
@@ -114,8 +255,13 @@ Custom Hook
 Service
  │
  ▼
+API Client
+ │
+ ▼
 Backend API
 ```
+
+This ensures clear separation between UI and data access.
 
 ---
 
@@ -128,9 +274,18 @@ Managed using Zustand.
 Examples:
 
 - Authentication state
-- User information
+- User session
+- Cart state
 - Application settings
 - UI state
+
+```text
+store
+│
+├── auth.store.ts
+├── cart.store.ts
+└── ui.store.ts
+```
 
 ### Local State
 
@@ -172,20 +327,40 @@ Route protection is handled through middleware and application state.
 
 Global providers are centralized in the providers directory.
 
-Examples:
+```text
+providers
+│
+├── AppProvider
+├── AuthProvider
+├── ThemeProvider
+└── QueryProvider
+```
 
-- AppProvider
-- AuthProvider
-- ThemeProvider
+Responsibilities:
+
+- Context composition
+- Theme management
+- Authentication context
+- React Query configuration
+- Global application setup
 
 ---
 
 ## Design Principles
 
-- Feature-Based Architecture
+- Module-Based Architecture
 - Separation of Concerns
+- Domain Isolation
 - Reusable Components
 - Type Safety
 - API Abstraction
+- Dependency Direction
 - Scalability
 - Maintainability
+- Single Responsibility Principle
+- UI / Business Logic Separation
+- Clear Ownership Boundaries
+
+```
+
+```

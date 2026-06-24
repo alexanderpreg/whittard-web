@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils/shadcn-utils';
+import { cn } from '@/lib/utils/shadcn-cn';
 import { cva } from 'class-variance-authority';
 
 const headingVariants = cva(

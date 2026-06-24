@@ -1,5 +1,5 @@
 // components/ui/Loading.tsx
-import { cn } from '@/lib/utils/shadcn-utils';
+import { cn } from '@/lib/utils/shadcn-cn';
 import styles from '../../styles/Loading.module.css';
 
 const SIZES = {

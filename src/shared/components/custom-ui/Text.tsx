@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils/shadcn-utils';
+import { cn } from '@/lib/utils/shadcn-cn';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const textVariants = cva('text-black', {

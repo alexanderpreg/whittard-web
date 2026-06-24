@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils/shadcn-utils';
+import { cn } from '@/lib/utils/shadcn-cn';
 import { useEffect, useRef, useState } from 'react';
 import { LoadingUi } from './Loading';
 

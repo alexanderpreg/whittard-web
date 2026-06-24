@@ -3,7 +3,7 @@
 import { Dialog as DialogPrimitive } from 'radix-ui';
 import * as React from 'react';
 
-import { cn } from '@/lib/utils/shadcn-utils';
+import { cn } from '@/lib/utils/shadcn-cn';
 import { Button } from '@/shared/components/shadcn-ui/button';
 import { XIcon } from 'lucide-react';
 

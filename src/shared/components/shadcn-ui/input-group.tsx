@@ -3,7 +3,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
-import { cn } from '@/lib/utils/shadcn-utils';
+import { cn } from '@/lib/utils/shadcn-cn';
 import { Button } from '@/shared/components/shadcn-ui/button';
 import { Input } from '@/shared/components/shadcn-ui/input';
 import { Textarea } from '@/shared/components/shadcn-ui/textarea';

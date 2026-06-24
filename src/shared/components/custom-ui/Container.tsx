@@ -1,11 +1,11 @@
-import { cn } from '@/lib/utils/shadcn-utils';
+import { cn } from '@/lib/utils/shadcn-cn';
 import { cva } from 'class-variance-authority';
 import * as React from 'react';
 
 const containerVariants = cva('w-full', {
   variants: {
     size: {
-      container: 'max-w-[1366px] px-2.5 lg:px-4 2xl:px-0 mx-auto xl:max-w-6xl 2xl:max-w-7xl',
+      container: 'max-w-7xl px-2.5 lg:px-4 2xl:px-0 mx-auto 2xl:max-w-7xl',
       full: 'max-w-screen',
     },
   },
@@ -14,15 +14,11 @@ const containerVariants = cva('w-full', {
   },
 });
 
-interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
-  as?: never;
+interface ContainerProps extends React.HTMLAttributes<HTMLElement> {
+  as?: keyof HTMLElementTagNameMap;
   size?: 'container' | 'full';
 }
 
-export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
-  ({ size, className, ...props }, ref) => {
-    return <div ref={ref} className={cn(containerVariants({ size }), className)} {...props} />;
-  },
-);
-
-Container.displayName = 'Container';
+export const Container = ({ as: Component = 'div', size, className, ...props }: ContainerProps) => {
+  return <Component className={cn(containerVariants({ size }), className)} {...props} />;
+};

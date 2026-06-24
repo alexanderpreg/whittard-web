@@ -3,7 +3,7 @@
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
 import * as React from 'react';
 
-import { cn } from '@/lib/utils/shadcn-utils';
+import { cn } from '@/lib/utils/shadcn-cn';
 import { Button } from '@/shared/components/shadcn-ui/button';
 import {
   InputGroup,
