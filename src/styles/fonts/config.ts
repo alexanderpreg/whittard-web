@@ -1,4 +1,5 @@
-import { Barlow, Geist, Geist_Mono, Inter } from 'next/font/google';
+import { Geist, Geist_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 
 export const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -10,29 +11,33 @@ export const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const barlow = Barlow({
-  subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'], // todos los pesos que necesites
-  variable: '--font-barlow',
+// export const barlow = Barlow({
+//   subsets: ['latin'],
+//   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+//   variable: '--font-barlow',
+//   display: 'swap',
+// });
+
+// export const inter = Inter({
+//   subsets: ['latin'],
+//   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+//   variable: '--font-inter',
+//   display: 'swap',
+// });
+
+export const avenirLt = localFont({
+  src: [
+    { path: './avenir-lt/Avenir LT Std 35 Light.otf', weight: '300', style: 'normal' },
+    { path: './avenir-lt/Avenir LT Std 45 Book.otf', weight: '400', style: 'normal' },
+    { path: './avenir-lt/Avenir LT Std 65 Medium.otf', weight: '500', style: 'normal' },
+    { path: './avenir-lt/Avenir LT Std 85 Heavy.otf', weight: '800', style: 'normal' },
+  ],
+  variable: '--font-avenir-lt',
   display: 'swap',
 });
 
-export const inter = Inter({
-  subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'], // todos los pesos que necesites
-  variable: '--font-inter',
+export const elephantDisplay = localFont({
+  src: [{ path: './elephant/Elephant-PersonalUse.ttf', weight: '400', style: 'normal' }],
+  variable: '--font-elephant-display',
   display: 'swap',
 });
-// export const boston = localFont({
-//   src: [
-//     { path: './boston/BostonThin.otf', weight: '100', style: 'normal' },
-//     { path: './boston/BostonExtraLight.otf', weight: '200', style: 'normal' },
-//     { path: './boston/BostonLight.otf', weight: '300', style: 'normal' },
-//     { path: './boston/BostonRegular.otf', weight: '400', style: 'normal' },
-//     { path: './boston/BostonSemiBold.otf', weight: '600', style: 'normal' },
-//     { path: './boston/BostonBold.otf', weight: '700', style: 'normal' },
-//     { path: './boston/BostonHeavy.otf', weight: '800', style: 'normal' },
-//     { path: './boston/BostonBlack.otf', weight: '900', style: 'normal' },
-//   ],
-//   display: 'swap',
-// });

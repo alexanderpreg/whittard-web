@@ -148,7 +148,7 @@ export default function Page() {
         </Text>
 
         <Carousel className="rounded-3xl border border-black/5 bg-white p-6 shadow-sm">
-          <div className="grid gap-6 lg:grid-cols-[1.35fr_0.65fr]">
+          <div className="grid gap-6">
             <div className="relative">
               <CarouselContent className="rounded-2xl">
                 {productImages.map((slide) => (

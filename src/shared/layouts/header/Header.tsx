@@ -1,19 +1,16 @@
 import { Container } from '@/shared/components/custom-ui/Container';
+import { CategoryNavigation } from './CategoryNavigation/CategoryNavigation';
+import MainHeader from './main/MainHeader';
+import { PromotionBar } from './promotion-bar/PromotionBar';
+import UtilityBar from './utility-bar/UtilityBar';
 
 export default function Header() {
   return (
-    <Container as="header" size="full" className="bg-brand-primary text-brand-white">
-      <Container className="flex h-20 items-center justify-between">
-        <div>{/* Logo */} aqui logo</div>
-
-        <nav aria-label="Navegación principal">{/* Navigation */}</nav>
-
-        <div className="flex items-center gap-4">
-          {/* Search */}
-          {/* Cart */}
-          {/* User */}
-        </div>
-      </Container>
+    <Container as="header" size="full" className="bg-brand-primary z-sticky sticky top-0">
+      <PromotionBar />
+      <UtilityBar />
+      <MainHeader />
+      <CategoryNavigation />
     </Container>
   );
 }

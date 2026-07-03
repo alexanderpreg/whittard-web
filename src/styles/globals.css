@@ -4,12 +4,39 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  /* Layers */
+  --z-index-base: 0;
+  --z-index-content: 10;
+  --z-index-dropdown: 20;
+  --z-index-sticky: 30;
+  --z-index-overlay: 40;
+  --z-index-drawer: 50;
+  --z-index-modal: 60;
+  --z-index-toast: 70;
+  --z-index-tooltip: 80;
+
+  --color-brand-primary: #3f5562;
+  --color-brand-secondary: #8196a1;
+  --color-brand-tertiary: #53250b;
+  --color-brand-quaternary: #1e663f;
+  --color-brand-highlight: #e7a81b;
+
+  --color-brand-white: #ffffff;
+  --color-brand-black: #1a1a1a;
+  --color-brand-100: #f4f4f4;
+  --color-brand-200: #e6e6e6;
+  --color-brand-400: #979797;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
+  --font-brand-avenir-lt: var(--font-avenir-lt);
+  --font-brand-elephant: var(--font-elephant-display);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -46,35 +73,9 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-
-  --color-brand-primary: var(--brand-primary);
-  --color-brand-secondary: var(--brand-secondary);
-  --color-brand-tertiary: var(--brand-tertiary);
-  --color-brand-quaternary: var(--brand-quaternary);
-  --color-brand-highlight: var(--brand-highlight);
-
-  --color-brand-white: var(--brand-white);
-  --color-brand-black: var(--brand-black);
-  --color-brand-100: var(--brand-100);
-  --color-brand-200: var(--brand-200);
-  --color-brand-400: var(--brand-400);
 }
 
 :root {
-  /* ========= Brand Colors ========= */
-  --brand-primary: #3f5562;
-  --brand-secondary: #8196a1;
-  --brand-tertiary: #53250b;
-  --brand-quaternary: #1e663f;
-  --brand-highlight: #e7a81b;
-
-  /* ========= Brand Neutrals ========= */
-  --brand-white: #ffffff;
-  --brand-black: #1a1a1a;
-  --brand-100: #f4f4f4;
-  --brand-200: #e6e6e6;
-  --brand-400: #979797;
-
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

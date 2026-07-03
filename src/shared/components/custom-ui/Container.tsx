@@ -5,7 +5,7 @@ import * as React from 'react';
 const containerVariants = cva('w-full', {
   variants: {
     size: {
-      container: 'max-w-7xl px-2.5 lg:px-4 2xl:px-0 mx-auto 2xl:max-w-7xl',
+      container: 'max-w-7xl px-2.5 lg:px-4 2xl:px-0 mx-auto 2xl:max-w-360',
       full: 'max-w-screen',
     },
   },

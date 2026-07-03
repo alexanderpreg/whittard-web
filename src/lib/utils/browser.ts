@@ -1,5 +1,9 @@
+export function isServer(): boolean {
+  return typeof window === 'undefined';
+}
+
 export function isClient(): boolean {
-  return typeof window !== 'undefined';
+  return !isServer();
 }
 
 export function isTouchDevice(): boolean {
