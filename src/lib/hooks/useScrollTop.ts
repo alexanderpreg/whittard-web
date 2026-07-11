@@ -3,13 +3,11 @@
 import { useEffect, useState } from 'react';
 
 export function useScrollTop(threshold = 0) {
-  const [isAtTop, setIsAtTop] = useState(true);
+  const [isAtTop, setIsAtTop] = useState<boolean | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      const atTop = window.scrollY <= threshold;
-
-      setIsAtTop((previous) => (previous === atTop ? previous : atTop));
+      setIsAtTop(window.scrollY <= threshold);
     };
 
     handleScroll();
@@ -18,9 +16,7 @@ export function useScrollTop(threshold = 0) {
       passive: true,
     });
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [threshold]);
 
   return isAtTop;

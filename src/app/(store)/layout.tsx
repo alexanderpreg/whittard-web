@@ -1,3 +1,4 @@
+import Footer from '@/shared/layouts/footer/Footer';
 import Header from '@/shared/layouts/header/Header';
 
 export default async function StoreLayout({
@@ -9,6 +10,7 @@ export default async function StoreLayout({
     <>
       <Header />
       {children}
+      <Footer />
     </>
   );
 }
