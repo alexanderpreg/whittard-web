@@ -99,7 +99,7 @@ export default definePrompt({
     'husky',
   ],
 
-  useEmoji: true,
+  useEmoji: false,
 
   emojiAlign: 'center',
   skipQuestions: ['footer', 'breaking', 'footerPrefix'],

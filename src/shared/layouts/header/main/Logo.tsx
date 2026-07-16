@@ -13,8 +13,8 @@ export function Logo({ src, alt }: LogoProps) {
         src={src}
         alt={alt}
         className="object-contain"
-        width={136}
-        height={42}
+        width={137}
+        height={43}
         skeleton={false}
         fallback={
           <div className="flex h-10.5 w-34 items-center justify-center rounded-md border border-dashed text-xs font-medium">

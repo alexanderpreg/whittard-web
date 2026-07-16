@@ -34,6 +34,7 @@ export function AppImage({
       alt={alt}
       className={cn(
         'transition-opacity duration-300',
+        !props.fill && 'h-auto max-w-full',
         status === 'loading' && 'opacity-0',
         status === 'loaded' && 'opacity-100',
         className,

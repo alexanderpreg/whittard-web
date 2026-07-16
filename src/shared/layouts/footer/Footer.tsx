@@ -6,6 +6,7 @@ import { Container } from '@/shared/components/custom-ui/Container';
 import { Heading } from '@/shared/components/custom-ui/Heading';
 
 import { footerColumns, footerContacts, footerPayments, footerSocials } from './footer.data';
+import { NewsletterSection } from './NewsletterSection';
 
 export default function Footer() {
   const officeContact =
@@ -21,8 +22,8 @@ export default function Footer() {
                 src="/logo-whittard.png"
                 alt="Whittard"
                 className="object-contain"
-                width={136}
-                height={42}
+                width={137}
+                height={43}
                 skeleton={false}
                 fallback={
                   <div className="flex h-10.5 w-34 items-center justify-center rounded-md border border-dashed text-xs font-medium">
@@ -125,7 +126,10 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 flex items-end justify-between border-t border-white/15 pt-5">
+        <div className="mt-10 pb-6">
+          <NewsletterSection />
+        </div>
+        <div className="flex items-end justify-between border-t border-white/15 pt-5">
           {' '}
           <p className="text-center text-sm leading-relaxed text-white/70">
             © 2012-2024, Whittard S.A.C. RUC 2000000000 Todos los derechos reservados. Desarrollado
