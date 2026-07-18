@@ -11,12 +11,17 @@ import { Button } from '@/shared/components/shadcn-ui/button';
 
 import { useCarousel } from '../core/useCarousel';
 
+interface CarouselNextProps extends React.ComponentProps<typeof Button> {
+  renderIcon?: () => React.ReactNode;
+}
+
 function CarouselNext({
   className,
   variant = 'outline',
   size = 'icon-sm',
+  renderIcon,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: CarouselNextProps) {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
   const [mounted, setMounted] = React.useState(false);
 
@@ -43,8 +48,7 @@ function CarouselNext({
       )}
       {...props}
     >
-      <ChevronRightIcon />
-
+      {renderIcon ? renderIcon() : <ChevronRightIcon />}
       <span className="sr-only">Next slide</span>
     </Button>
   );

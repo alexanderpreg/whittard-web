@@ -12,6 +12,7 @@ function Carousel({
   orientation = 'horizontal',
   opts,
   plugins,
+  setApi,
   className,
   children,
   ...props
@@ -60,6 +61,16 @@ function Carousel({
     },
     [scrollPrev, scrollNext],
   );
+
+  React.useEffect(() => {
+    if (!api || !setApi) return;
+
+    setApi(api);
+
+    return () => {
+      setApi(undefined);
+    };
+  }, [api, setApi]);
 
   React.useEffect(() => {
     if (!api) return;

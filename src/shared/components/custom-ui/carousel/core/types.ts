@@ -12,6 +12,7 @@ export interface CarouselProps {
   opts?: CarouselOptions;
   plugins?: CarouselPlugin;
   orientation?: 'horizontal' | 'vertical';
+  setApi?: (api: CarouselApi | undefined) => void;
 }
 
 export interface CarouselContextProps extends CarouselProps {

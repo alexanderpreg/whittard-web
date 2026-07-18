@@ -44,8 +44,8 @@ function CarouselDots({ className, renderDot, ...props }: CarouselDotsProps) {
             aria-current={active}
             onClick={goTo}
             className={cn(
-              'h-2.5 w-2.5 rounded-full transition-all duration-300',
-              active ? 'bg-primary w-8' : 'bg-muted hover:bg-primary/40',
+              'h-2.5 rounded-full transition-all duration-300',
+              active ? 'bg-primary w-8' : 'bg-muted hover:bg-primary/40 w-2.5',
             )}
           />
         );
