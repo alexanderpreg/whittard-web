@@ -81,12 +81,12 @@ export function Banner({ slides, fallbackImageUrl }: BannerProps) {
         {activeSlides.length > 1 && (
           <>
             <CarouselPrevious
-              className="border-brand-primary/20 text-brand-dark left-[10%] z-20 h-10 w-10 bg-white/90 shadow-md hover:bg-white"
+              className="border-brand-primary/20 text-brand-dark left-[5%] z-20 h-10 w-10 bg-white/90 shadow-md hover:bg-white sm:left-[10%]"
               renderIcon={() => <ChevronLeftIcon className="size-6" strokeWidth={2.5} />}
             />
 
             <CarouselNext
-              className="border-brand-primary/20 text-brand-dark right-[10%] z-20 h-10 w-10 bg-white/90 shadow-md hover:bg-white"
+              className="border-brand-primary/20 text-brand-dark right-[5%] z-20 h-10 w-10 bg-white/90 shadow-md hover:bg-white sm:right-[10%]"
               renderIcon={() => <ChevronRightIcon className="size-5" strokeWidth={2.5} />}
             />
 

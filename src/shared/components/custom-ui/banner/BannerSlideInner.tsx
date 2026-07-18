@@ -16,17 +16,28 @@ export function BannerSlideInner({ slide, onFullscreenChange }: BannerSlideInner
   }
 
   return (
-    <picture>
-      {slide.mobileImageUrl && <source media="(max-width: 640px)" srcSet={slide.mobileImageUrl} />}
+    <div className="relative h-full w-full">
+      {slide.mobileImageUrl && (
+        <AppImage
+          src={slide.mobileImageUrl}
+          alt="Banner de Whittard"
+          fill
+          sizes="(max-width: 640px) 100vw, 0px"
+          className="object-cover sm:hidden"
+          priority
+          skeleton={false}
+        />
+      )}
 
       <AppImage
         src={slide.desktopImageUrl}
         alt="Banner de Whittard"
         fill
         sizes="100vw"
-        className="object-cover"
+        className="hidden object-cover sm:block"
+        priority
         skeleton={false}
       />
-    </picture>
+    </div>
   );
 }
