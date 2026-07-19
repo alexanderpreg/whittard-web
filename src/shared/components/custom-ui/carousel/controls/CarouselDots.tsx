@@ -45,7 +45,9 @@ function CarouselDots({ className, renderDot, ...props }: CarouselDotsProps) {
             onClick={goTo}
             className={cn(
               'h-2.5 rounded-full transition-all duration-300',
-              active ? 'bg-primary w-8' : 'bg-muted hover:bg-primary/40 w-2.5',
+              active
+                ? 'bg-brand-primary w-8'
+                : 'bg-brand-secondary/40 hover:bg-brand-primary/40 w-2.5',
             )}
           />
         );

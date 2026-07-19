@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${avenirLt.className} ${elephantDisplay.variable} ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${avenirLt.className} ${elephantDisplay.variable} ${geistSans.variable} ${geistMono.variable} text-brand-primary h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">{children}</body>
     </html>

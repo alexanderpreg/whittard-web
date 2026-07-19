@@ -1,16 +1,12 @@
 import { cn } from '@/lib/utils/shadcn-cn';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const textVariants = cva('text-black', {
+const textVariants = cva('text-brand-primary', {
   variants: {
     variant: {
       body: 'text-sm sm:text-base tracking-wide ',
       small: 'text-xs sm:text-sm  tracking-wide leading-relaxed',
       caption: 'text-[11px] sm:text-xs  tracking-wide',
-    },
-    tone: {
-      default: 'text-black',
-      muted: 'daryza-gray-oficial',
     },
   },
   defaultVariants: {

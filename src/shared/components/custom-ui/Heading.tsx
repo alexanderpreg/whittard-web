@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils/shadcn-cn';
 import { cva } from 'class-variance-authority';
 
-const headingVariants = cva('font-brand-elephant  text-brand-dark ', {
+const headingVariants = cva('font-brand-elephant  text-brand-primary ', {
   variants: {
     variant: {
       // 1. Display: Para Banners principales o Hero en Home.
@@ -14,7 +14,7 @@ const headingVariants = cva('font-brand-elephant  text-brand-dark ', {
 
       // 3. Subheading: Para subtítulos que acompañan a un heading o secciones secundarias.
       // Móvil: 18px (lg) -> Escritorio: 24px (2xl). Equilibrio puro.
-      subheading: 'text-lg sm:text-xl md:text-2xl font-semibold leading-snug text-brand-dark/90',
+      subheading: 'text-lg sm:text-xl md:text-2xl font-semibold leading-snug ',
 
       // 4. CardTitle: Para títulos de tarjetas de productos, blogs o grillas pequeñas.
       // Móvil: 16px (base) -> Escritorio: 18px (lg). Se mantiene compacto pero legible.
