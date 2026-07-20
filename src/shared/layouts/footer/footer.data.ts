@@ -53,7 +53,7 @@ export const footerColumns: FooterColumn[] = [
       { label: 'Contacto', href: '/contact' },
       { label: 'Libro de Reclamaciones', href: '/claims-book' },
       { label: 'Términos y Condiciones', href: '/terms' },
-      { label: 'Delivery and Returns', href: '/delivery-and-returns' },
+      { label: 'Delivery and Returns', href: '/delivery-returns' },
       { label: 'Preguntas y Respuestas', href: '/faq' },
       { label: 'Políticas de Privacidad', href: '/privacy-policy' },
     ],
