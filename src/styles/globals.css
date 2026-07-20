@@ -157,3 +157,33 @@
     @apply font-sans;
   }
 }
+
+@layer utilities {
+  .rich-text-legal {
+    @apply text-brand-secondary text-justify text-sm leading-relaxed;
+
+    & h2 {
+      @apply text-brand-primary mt-6 mb-3 block text-base font-bold tracking-normal;
+    }
+
+    & p {
+      @apply mb-4 block;
+    }
+
+    & ul {
+      @apply mb-4 block list-disc space-y-1 pl-6;
+    }
+
+    & ol {
+      @apply mb-4 block list-decimal space-y-1 pl-6;
+    }
+
+    & li {
+      @apply text-brand-secondary text-sm leading-relaxed;
+    }
+
+    & strong {
+      @apply text-brand-primary font-bold;
+    }
+  }
+}
