@@ -14,9 +14,10 @@ export function ContactChannels({ channels }: ContactChannelsProps) {
       {channels.map((channel) => (
         // Contenedor principal de la fila
         <div key={channel.title} className="flex items-center gap-10">
-          {/* Columna izquierda: El círculo (con margin-right grande para separar del texto) */}
+          {/* Columna izquierda: Contenedor circular con centrado absoluto */}
           <div className="relative mr-16 flex h-[220px] w-[220px] shrink-0 items-center justify-center">
-            <div className="absolute inset-0">
+            {/* Fondo: Centrado absoluto */}
+            <div className="absolute inset-0 flex items-center justify-center">
               <AppImage
                 src="/contact-us/circulo-fill.png"
                 alt="Background"
@@ -27,15 +28,18 @@ export function ContactChannels({ channels }: ContactChannelsProps) {
               />
             </div>
 
-            <AppImage
-              src={channel.iconUrl}
-              alt={channel.title}
-              width={100}
-              height={100}
-              className="object-contain"
-              skeleton={false}
-              fallback={<div className="size-[100px]" />}
-            />
+            {/* Ícono: Centrado absoluto sobre el fondo */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <AppImage
+                src={channel.iconUrl}
+                alt={channel.title}
+                width={100}
+                height={100}
+                className="object-contain"
+                skeleton={false}
+                fallback={<div className="size-[100px]" />}
+              />
+            </div>
           </div>
 
           {/* Columna derecha: Bloque de texto y botón */}
