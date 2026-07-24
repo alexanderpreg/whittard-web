@@ -14,6 +14,7 @@ import {
 } from '@/shared/components/shadcn-ui/breadcrumb';
 
 export type BreadcrumbItemType = {
+  id?: string;
   label: string;
   href?: string;
 };
@@ -37,7 +38,7 @@ export function PageBreadcrumb({ items, className, currentClassName }: PageBread
           const isLast = index === items.length - 1;
 
           return (
-            <Fragment key={item.href ?? item.label}>
+            <Fragment key={item.id ?? index}>
               <BreadcrumbItem>
                 {/* Si tiene href y NO es el último elemento, se renderiza como enlace */}
                 {item.href && !isLast ? (

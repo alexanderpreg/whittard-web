@@ -43,7 +43,7 @@ export function FaqsView({ faqData }: FaqsViewProps) {
     <Container as="main" className="mt-6 mb-14 flex-1 space-y-10">
       <PageBreadcrumb items={FAQ_BREADCRUMBS} />
 
-      <div className="mx-auto max-w-[1110px] space-y-10">
+      <div className="space-y-10">
         <div className="mx-auto max-w-3xl space-y-4 text-center">
           <Heading
             as="h1"

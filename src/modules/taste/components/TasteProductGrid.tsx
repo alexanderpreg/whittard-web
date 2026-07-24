@@ -10,7 +10,7 @@ export function TasteProductGrid({ cards }: TasteProductGridProps) {
   return (
     <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-3">
       {cards.map((card) => (
-        <div key={card.href} className="flex flex-col items-center gap-3">
+        <div key={card.href} className="flex flex-col items-center gap-6">
           <div className="relative aspect-[331/352] w-full overflow-hidden">
             <AppImage
               src={card.imageUrl}

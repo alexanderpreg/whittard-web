@@ -1,3 +1,4 @@
+import { Toaster } from '@/shared/components/custom-ui/toaster/Toaster';
 import { avenirLt, elephantDisplay, geistMono, geistSans } from '@/styles/fonts/config';
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
@@ -17,7 +18,10 @@ export default function RootLayout({
       lang="es"
       className={`${avenirLt.className} ${elephantDisplay.variable} ${geistSans.variable} ${geistMono.variable} text-brand-primary h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }

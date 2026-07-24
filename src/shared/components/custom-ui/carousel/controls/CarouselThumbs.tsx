@@ -49,7 +49,6 @@ function CarouselThumbs<T>({
             type="button"
             onClick={() => api.scrollTo(index)}
             aria-current={active}
-            className={cn('transition-all', active && 'ring-brand-primary ring-2')}
           >
             {renderThumb(item, active, index)}
           </button>

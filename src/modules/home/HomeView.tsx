@@ -25,12 +25,12 @@ const BANNER_SLIDES: BannerSlide[] = [
     mobileImageUrl: '/home/banner/portadamobil.webp',
     linkUrl: 'https://whittard.com/envios',
   },
-  // {
-  //   id: '3',
-  //   isActive: true,
-  //   type: 'video',
-  //   videoUrl: '/home/banner/video.mp4',
-  // },
+  {
+    id: '3',
+    isActive: true,
+    type: 'video',
+    videoUrl: '/home/banner/video.mp4',
+  },
 ];
 
 export const CATEGORY_SLIDES: CategorySlide[] = [

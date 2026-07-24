@@ -13,32 +13,36 @@ export function ProductCard({ product }: ProductCardProps) {
   const lowStock = product.stock > 0 && product.stock <= 5;
 
   return (
-    <Link href={`/producto/${product.slug}`} className="group flex h-full flex-col gap-3">
-      <div className="border-brand-primary/50 relative aspect-square w-full overflow-hidden rounded-xs border">
-        <AppImage
-          src={product.image}
-          alt={product.name}
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
-          className="h-full w-full object-cover transition-transform duration-400 ease-out group-hover:scale-105"
-          skeleton={false}
-          fallback={
-            <div className="flex size-full items-center justify-center p-4 text-center text-xs font-medium">
-              Error imagen {product.name}
-            </div>
-          }
-        />
-      </div>
+    <article className="group flex h-full flex-col gap-3">
+      <Link href={`/producto/${product.slug}`} className="block">
+        <div className="border-brand-primary/50 relative aspect-square w-full overflow-hidden rounded-xs border">
+          <AppImage
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+            className="h-full w-full object-cover transition-transform duration-400 ease-out group-hover:scale-105"
+            skeleton={false}
+            fallback={
+              <div className="flex size-full items-center justify-center p-4 text-center text-xs font-medium">
+                Error imagen {product.name}
+              </div>
+            }
+          />
+        </div>
+      </Link>
 
       <div className="flex flex-1 flex-col gap-2">
-        <span className="line-clamp-2 text-sm leading-tight font-medium text-gray-800">
-          {product.name}
-        </span>
+        <Link href={`/producto/${product.slug}`} className="block">
+          <span className="line-clamp-2 text-sm leading-tight font-medium text-gray-800">
+            {product.name}
+          </span>
+        </Link>
 
         <div className="flex items-center gap-2">
           {hasPromo ? (
             <>
-              <span className="text-sm font-bold text-red-600">
+              <span className="text-brand-primary text-sm font-bold">
                 {formatCurrency(product.promoPrice!)}
               </span>
               <span className="text-xs text-gray-400 line-through">
@@ -49,6 +53,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <span className="text-sm font-bold text-gray-900">{formatCurrency(product.price)}</span>
           )}
         </div>
+
         <Stars rating={product.rating} />
 
         {lowStock && (
@@ -57,6 +62,15 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {product.stock === 0 && <span className="text-xs font-medium text-red-600">Agotado</span>}
       </div>
-    </Link>
+
+      {product.stock > 0 && (
+        <button
+          type="button"
+          className="bg-brand-primary hover:border-brand-primary inline-flex h-10 items-center justify-center border border-gray-300 px-3 py-2 text-sm font-medium text-white opacity-100 transition-colors md:mt-auto md:border-0 md:px-0 md:py-0 md:text-left md:opacity-0 md:group-hover:opacity-100"
+        >
+          Agregar al carrito
+        </button>
+      )}
+    </article>
   );
 }

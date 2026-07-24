@@ -29,29 +29,27 @@ const CLAIMS_CONTENT: ClaimsBookContent = {
 export function ClaimsBookView() {
   return (
     <Container as="main" size="full" className="mb-8 flex-1">
-      <Container className="mt-14 mb-14">
-        <div className="mx-auto max-w-[1110px] space-y-5 px-4 md:px-0">
-          <Heading
-            as="h1"
-            variant="heading"
-            className="font-brand-elephant text-brand-primary text-3xl"
-          >
-            Libro de Reclamaciones
-          </Heading>
+      <Container className="mt-14 mb-14 space-y-5">
+        <Heading
+          as="h1"
+          variant="heading"
+          className="font-brand-elephant text-brand-primary text-3xl"
+        >
+          Libro de Reclamaciones
+        </Heading>
 
-          <Text
-            variant="body"
-            className="text-brand-secondary max-w-none text-sm leading-relaxed font-light"
-          >
-            We ask that you read this privacy notice carefully as it contains important information
-            on who we are, how and why we collect, store, use and share personal information, your
-            rights in relation to your personal information and on how to contact us and supervisory
-            authorities in the event you have a complaint.
-          </Text>
+        <Text
+          variant="body"
+          className="text-brand-secondary max-w-none text-sm leading-relaxed font-light"
+        >
+          We ask that you read this privacy notice carefully as it contains important information on
+          who we are, how and why we collect, store, use and share personal information, your rights
+          in relation to your personal information and on how to contact us and supervisory
+          authorities in the event you have a complaint.
+        </Text>
 
-          <div className="pt-4">
-            <ClaimsBookForm content={CLAIMS_CONTENT} />
-          </div>
+        <div className="pt-4">
+          <ClaimsBookForm content={CLAIMS_CONTENT} />
         </div>
       </Container>
     </Container>

@@ -8,12 +8,12 @@ export interface PrivacyPolicyViewProps {
 
 export function PrivacyPolicyView({ htmlContent }: PrivacyPolicyViewProps) {
   return (
-    <Container as="main" size="full" className="mb-12 flex-1">
+    <Container as="main" size="full" className="mb-14 flex-1 space-y-14">
       <PageHeroBanner title="Políticas de Privacidad" imageUrl="/banner-static.png" />
 
-      <Container className="mt-14 mb-14">
+      <Container>
         <div
-          className="rich-text-legal mx-auto max-w-3xl"
+          className="rich-text-legal"
           // El fallback || '' asegura que React siempre reciba un string
           dangerouslySetInnerHTML={{ __html: htmlContent || '' }}
         />

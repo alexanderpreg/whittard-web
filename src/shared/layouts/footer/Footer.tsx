@@ -135,7 +135,7 @@ export default function Footer() {
             © 2012-2024, Whittard S.A.C. RUC 2000000000 Todos los derechos reservados. Desarrollado
             @WAVTechnology
           </p>
-          <div className="flex h-full w-fit flex-wrap items-center justify-center gap-4 lg:justify-end">
+          <div className="flex h-full w-fit flex-wrap items-center justify-center gap-2.5 lg:justify-end">
             {footerPayments.map((payment) => (
               <span key={payment.label} className="flex h-full w-fit items-center">
                 <AppImage

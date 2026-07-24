@@ -47,7 +47,7 @@ export function ContactChannels({ channels }: ContactChannelsProps) {
             <Heading
               as="h2"
               variant="subheading"
-              className="font-brand-elephant text-brand-primary text-[26px] leading-tight"
+              className="font-brand-avenir-lt text-brand-primary text-[30px]! leading-tight font-bold!"
             >
               {channel.title}
             </Heading>

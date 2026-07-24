@@ -34,16 +34,14 @@ const TASTE_DATA: TastePageData = {
 
 export function TasteView() {
   return (
-    <Container as="main" className="mb-8 flex-1">
-      <div className="mx-auto mt-8 mb-14 flex w-full max-w-[75%] flex-col gap-6 px-4 md:px-0">
-        <PageBreadcrumb items={TASTE_BREADCRUMBS} />
+    <Container as="main" className="mt-10 mb-14 flex w-full flex-1 flex-col gap-6">
+      <PageBreadcrumb items={TASTE_BREADCRUMBS} />
 
-        <TasteHero content={TASTE_DATA.hero} />
+      <TasteHero content={TASTE_DATA.hero} />
 
-        {/* 3. Grid de productos separado manualmente para mantener el diseño limpio */}
-        <div className="pt-10">
-          <TasteProductGrid cards={TASTE_DATA.cards} />
-        </div>
+      {/* 3. Grid de productos separado manualmente para mantener el diseño limpio */}
+      <div className="pt-10">
+        <TasteProductGrid cards={TASTE_DATA.cards} />
       </div>
     </Container>
   );

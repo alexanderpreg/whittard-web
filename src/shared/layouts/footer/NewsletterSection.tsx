@@ -40,7 +40,7 @@ export function NewsletterSection() {
         <button
           type="submit"
           aria-label="Suscribirse"
-          className="text-brand-primary inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-white px-5 py-2.5 text-sm font-semibold transition-all hover:bg-white/90 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:outline-none active:scale-95"
+          className="text-brand-primary inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-white px-5 py-2.5 text-sm font-semibold hover:bg-white/90"
         >
           <span>Suscribirme</span>
           <Send size={16} />
