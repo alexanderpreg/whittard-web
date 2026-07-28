@@ -4,16 +4,16 @@ export const utilityNavigationItems = [
   { label: 'Favoritos', href: '/wishlist', icon: Heart, includeSubpath: false },
   { label: 'Tiendas', href: '/stores', icon: MapPin, includeSubpath: false },
   { label: 'Mi cuenta', href: '/account', icon: User, includeSubpath: true },
-  { label: 'Carrito', href: '/bag', icon: ShoppingBag, includeSubpath: false },
+  { label: 'Carrito', href: '/carrito', icon: ShoppingBag, includeSubpath: false },
 ] as const;
 
 export const categoryNavigationItems = [
-  { label: 'Tea', href: '/tea', includeSubpath: false },
-  { label: 'Coffee', href: '/coffee', includeSubpath: false },
-  { label: 'Hot Chocolate', href: '/hot-chocolate', includeSubpath: false },
-  { label: 'Gifts', href: '/gifts', includeSubpath: false },
-  { label: 'Equipment', href: '/equipment', includeSubpath: false },
-  { label: 'Biscuits & Chocolates', href: '/biscuits-chocolates', includeSubpath: false },
+  { label: 'Tea', href: '/catalogo/tea', includeSubpath: true },
+  { label: 'Coffee', href: '/catalogo/coffee', includeSubpath: true },
+  { label: 'Hot Chocolate', href: '/catalogo/hot-chocolate', includeSubpath: true },
+  { label: 'Gifts', href: '/catalogo/gifts', includeSubpath: true },
+  { label: 'Equipment', href: '/catalogo/equipment', includeSubpath: true },
+  { label: 'Biscuits & Chocolates', href: '/catalogo/biscuits-chocolates', includeSubpath: true },
 ] as const;
 
 export type MegamenuColumn = {
@@ -37,310 +37,266 @@ export type CategoryMegamenu = {
 
 export const categoryMegamenus: Record<string, CategoryMegamenu> = {
   Tea: {
-    href: '/tea',
+    href: '/catalogo/tea',
     columns: [
       {
-        title: 'Shop tea',
+        title: 'Los más populares',
         items: [
-          { label: 'Black Tea', href: '/tea/black-tea' },
-          { label: 'Green Tea', href: '/tea/green-tea' },
-          { label: 'Herbal Tea', href: '/tea/herbal-tea' },
-          { label: 'Tea Bags', href: '/tea/tea-bags' },
+          { label: 'Earl Grey Classic', href: '/producto/earl-grey-classic' },
+          { label: 'English Breakfast', href: '/producto/english-breakfast' },
+          { label: 'Jasmine Green Tea', href: '/producto/jasmine-green-tea' },
+          { label: 'Matcha Premium', href: '/producto/matcha-premium' },
         ],
       },
       {
-        title: 'Discover',
+        title: 'Categorías',
         items: [
-          { label: 'Loose Leaf', href: '/tea/loose-leaf' },
-          { label: 'Afternoon Tea', href: '/tea/afternoon-tea' },
-          { label: 'Tea Gifts', href: '/gifts/tea-gifts' },
-          { label: 'Best Sellers', href: '/tea/best-sellers' },
+          { label: 'Té Negro', href: '/catalogo/tea' },
+          { label: 'Té Verde', href: '/catalogo/tea' },
+          { label: 'Infusiones', href: '/catalogo/tea' },
+          { label: 'Edición Limitada', href: '/catalogo/tea' },
         ],
       },
       {
-        title: 'Collections',
+        title: 'Colecciones',
         items: [
-          { label: 'Classic Collection', href: '/tea/classic-collection' },
-          { label: 'Seasonal Editions', href: '/tea/seasonal-editions' },
-          { label: 'Decaf Tea', href: '/tea/decaf-tea' },
-          { label: 'Tea Samplers', href: '/tea/samplers' },
+          { label: 'Clásicos', href: '/catalogo/tea' },
+          { label: 'Ediciones de Temporada', href: '/catalogo/tea' },
+          { label: 'Sets de Regalo', href: '/producto/set-te-gourmet' },
+          { label: 'Pack Iniciación', href: '/producto/pack-iniciacion-te' },
         ],
       },
     ],
     promos: [
       {
-        href: '/gifts/tea-gifts',
+        href: '/catalogo/tea',
         imageSrc:
           'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=900&q=80',
       },
       {
-        href: '/tea/new-in',
+        href: '/catalogo/tea',
         imageSrc:
           'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?auto=format&fit=crop&w=900&q=80',
       },
     ],
   },
   Coffee: {
-    href: '/coffee',
+    href: '/catalogo/coffee',
     columns: [
       {
-        title: 'Shop coffee',
+        title: 'Los más populares',
         items: [
-          { label: 'Whole Bean', href: '/coffee/whole-bean' },
-          { label: 'Ground Coffee', href: '/coffee/ground-coffee' },
-          { label: 'Espresso', href: '/coffee/espresso' },
-          { label: 'Coffee Bags', href: '/coffee/coffee-bags' },
+          { label: 'Colombia Supremo', href: '/producto/colombia-supremo' },
+          { label: 'Café de Especialidad', href: '/catalogo/coffee' },
+          { label: 'Café Molido', href: '/catalogo/coffee' },
+          { label: 'Café en Grano', href: '/catalogo/coffee' },
         ],
       },
       {
-        title: 'Discover',
+        title: 'Categorías',
         items: [
-          { label: 'Dark Roast', href: '/coffee/dark-roast' },
-          { label: 'Medium Roast', href: '/coffee/medium-roast' },
-          { label: 'Decaf Coffee', href: '/coffee/decaf' },
-          { label: 'Coffee Gifts', href: '/gifts/coffee-gifts' },
+          { label: 'Tueste Medio', href: '/catalogo/coffee' },
+          { label: 'Tueste Oscuro', href: '/catalogo/coffee' },
+          { label: 'Café Descafeinado', href: '/catalogo/coffee' },
+          { label: 'Origen Único', href: '/catalogo/coffee' },
         ],
       },
       {
-        title: 'Collections',
+        title: 'Colecciones',
         items: [
-          { label: 'House Blends', href: '/coffee/house-blends' },
-          { label: 'Single Origin', href: '/coffee/single-origin' },
-          { label: 'Limited Editions', href: '/coffee/limited-editions' },
-          { label: 'Best Sellers', href: '/coffee/best-sellers' },
+          { label: 'Mezclas de la Casa', href: '/catalogo/coffee' },
+          { label: 'Ediciones Limitadas', href: '/catalogo/coffee' },
+          { label: 'Regalos de Café', href: '/catalogo/gifts' },
+          { label: 'Más Vendidos', href: '/catalogo/coffee' },
         ],
       },
     ],
     promos: [
       {
-        href: '/gifts/coffee-gifts',
+        href: '/catalogo/coffee',
         imageSrc:
           'https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=900&q=80',
       },
       {
-        href: '/accessories/brewing',
+        href: '/catalogo/coffee',
         imageSrc:
           'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80',
       },
     ],
   },
   'Hot Chocolate': {
-    href: '/hot-chocolate',
+    href: '/catalogo/hot-chocolate',
     columns: [
       {
-        title: 'Shop hot chocolate',
+        title: 'Los más populares',
         items: [
-          { label: 'Classic Hot Chocolate', href: '/hot-chocolate/classic' },
-          { label: 'Luxury Hot Chocolate', href: '/hot-chocolate/luxury' },
-          { label: 'White Hot Chocolate', href: '/hot-chocolate/white' },
-          { label: 'Instant Hot Chocolate', href: '/hot-chocolate/instant' },
+          { label: 'Chocolate Caliente Deluxe', href: '/producto/hot-chocolate-deluxe' },
+          { label: 'Chocolate Clásico', href: '/catalogo/hot-chocolate' },
+          { label: 'Chocolate Blanco', href: '/catalogo/hot-chocolate' },
+          { label: 'Chocolate Instantáneo', href: '/catalogo/hot-chocolate' },
         ],
       },
       {
-        title: 'Discover',
+        title: 'Descubre',
         items: [
-          { label: 'Seasonal Flavours', href: '/hot-chocolate/seasonal-flavours' },
-          { label: 'Marshmallows', href: '/hot-chocolate/marshmallows' },
-          { label: 'Gift Sets', href: '/hot-chocolate/gift-sets' },
-          { label: 'Best Sellers', href: '/hot-chocolate/best-sellers' },
+          { label: 'Sabores de Temporada', href: '/catalogo/hot-chocolate' },
+          { label: 'Malvaviscos', href: '/catalogo/hot-chocolate' },
+          { label: 'Sets de Regalo', href: '/catalogo/gifts' },
+          { label: 'Más Vendidos', href: '/catalogo/hot-chocolate' },
         ],
       },
       {
-        title: 'Collections',
+        title: 'Colecciones',
         items: [
-          { label: 'Indulgent Classics', href: '/hot-chocolate/indulgent-classics' },
-          { label: 'Vegan Friendly', href: '/hot-chocolate/vegan-friendly' },
-          { label: 'Luxury Collection', href: '/hot-chocolate/luxury-collection' },
-          { label: 'Treat Boxes', href: '/hot-chocolate/treat-boxes' },
+          { label: 'Clásicos Indulgentes', href: '/catalogo/hot-chocolate' },
+          { label: 'Opción Vegana', href: '/catalogo/hot-chocolate' },
+          { label: 'Lujo', href: '/catalogo/hot-chocolate' },
+          { label: 'Cajas Sorpresa', href: '/catalogo/hot-chocolate' },
         ],
       },
     ],
     promos: [
       {
-        href: '/hot-chocolate',
+        href: '/catalogo/hot-chocolate',
         imageSrc:
           'https://images.unsplash.com/photo-1517578239113-b03992dcdd25?auto=format&fit=crop&w=900&q=80',
       },
       {
-        href: '/hot-chocolate/gift-sets',
+        href: '/catalogo/hot-chocolate',
         imageSrc:
           'https://images.unsplash.com/photo-1549007994-cb92caebd54f?auto=format&fit=crop&w=900&q=80',
       },
     ],
   },
   Gifts: {
-    href: '/gifts',
+    href: '/catalogo/gifts',
     columns: [
       {
-        title: 'Gift type',
+        title: 'Tipo de regalo',
         items: [
-          { label: 'All Gifts', href: '/gifts' },
-          { label: 'Coffee Gifts', href: '/gifts/coffee-gifts' },
-          { label: 'Tea Gifts', href: '/gifts/tea-gifts' },
-          { label: 'Hot Chocolate Gifts', href: '/gifts/hot-chocolate-gifts' },
+          { label: 'Todos los Regalos', href: '/catalogo/gifts' },
+          { label: 'Sets de Té Gourmet', href: '/producto/set-te-gourmet' },
+          { label: 'Pack Iniciación', href: '/producto/pack-iniciacion-te' },
+          { label: 'Regalos de Café', href: '/catalogo/coffee' },
         ],
       },
       {
-        title: 'Gifts to inspire',
+        title: 'Para inspirarte',
         items: [
-          { label: 'New In', href: '/gifts/new-in' },
-          { label: 'Gifts Under £30', href: '/gifts/under-30' },
-          { label: 'Luxury Gifts', href: '/gifts/luxury' },
-          { label: 'Vegan Gifts', href: '/gifts/vegan' },
+          { label: 'Novedades', href: '/catalogo/gifts' },
+          { label: 'Regalos bajo S/ 100', href: '/catalogo/gifts' },
+          { label: 'Regalos de Lujo', href: '/catalogo/gifts' },
+          { label: 'Regalos Veganos', href: '/catalogo/gifts' },
         ],
       },
       {
-        title: 'Gift collections',
+        title: 'Colecciones',
         items: [
-          { label: 'Best of British Gifts', href: '/gifts/british' },
-          { label: 'Corporate Gifting', href: '/gifts/corporate' },
-          { label: "Father's Day Gifts", href: '/gifts/fathers-day' },
-          { label: 'Wedding Gifts', href: '/gifts/wedding' },
+          { label: 'Lo Mejor de Whittard', href: '/catalogo/gifts' },
+          { label: 'Cestas de Regalo', href: '/catalogo/gifts' },
+          { label: 'Para Bodas', href: '/catalogo/gifts' },
+          { label: 'Para Empresas', href: '/catalogo/gifts' },
         ],
       },
     ],
     promos: [
       {
-        href: '/gifts/tea-gifts',
+        href: '/catalogo/gifts',
         imageSrc:
           'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=900&q=80',
       },
       {
-        href: '/gifts/luxury',
+        href: '/catalogo/gifts',
         imageSrc:
           'https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&w=900&q=80',
       },
     ],
   },
   Equipment: {
-    href: '/equipment',
+    href: '/catalogo/equipment',
     columns: [
       {
-        title: 'Shop equipment',
+        title: 'Equipos',
         items: [
-          { label: 'Tea Makers', href: '/equipment/tea-makers' },
-          { label: 'Coffee Brewers', href: '/equipment/coffee-brewers' },
-          { label: 'Grinders', href: '/equipment/grinders' },
-          { label: 'Kettles', href: '/equipment/kettles' },
+          { label: 'Teteras', href: '/catalogo/equipment' },
+          { label: 'Cafeteras', href: '/catalogo/equipment' },
+          { label: 'Molinos', href: '/catalogo/equipment' },
+          { label: 'Hervidores', href: '/catalogo/equipment' },
         ],
       },
       {
-        title: 'Discover',
+        title: 'Descubre',
         items: [
-          { label: 'Espresso Tools', href: '/equipment/espresso-tools' },
-          { label: 'Serving Gear', href: '/equipment/serving' },
-          { label: 'Travel Sets', href: '/equipment/travel-sets' },
-          { label: 'Bestsellers', href: '/equipment/best-sellers' },
+          { label: 'Accesorios para Espresso', href: '/catalogo/equipment' },
+          { label: 'Juegos de Servicio', href: '/catalogo/equipment' },
+          { label: 'Sets de Viaje', href: '/catalogo/equipment' },
+          { label: 'Más Vendidos', href: '/catalogo/equipment' },
         ],
       },
       {
-        title: 'Collections',
+        title: 'Colecciones',
         items: [
-          { label: 'Home Barista', href: '/equipment/home-barista' },
-          { label: 'Starter Kits', href: '/equipment/starter-kits' },
-          { label: 'Premium Picks', href: '/equipment/premium' },
-          { label: 'Giftable Tools', href: '/equipment/giftable-tools' },
+          { label: 'Home Barista', href: '/catalogo/equipment' },
+          { label: 'Kits de Iniciación', href: '/catalogo/equipment' },
+          { label: 'Selección Premium', href: '/catalogo/equipment' },
+          { label: 'Herramientas para Regalar', href: '/catalogo/equipment' },
         ],
       },
     ],
     promos: [
       {
-        href: '/equipment/brew-essentials',
+        href: '/catalogo/equipment',
         imageSrc:
           'https://images.unsplash.com/photo-1512568400610-62da28bc8a13?auto=format&fit=crop&w=900&q=80',
       },
       {
-        href: '/equipment/coffee-brewers',
+        href: '/catalogo/equipment',
         imageSrc:
           'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=900&q=80',
       },
     ],
   },
   'Biscuits & Chocolates': {
-    href: '/biscuits-chocolates',
+    href: '/catalogo/biscuits-chocolates',
     columns: [
       {
-        title: 'Shop treats',
+        title: 'Productos',
         items: [
-          { label: 'Biscuits', href: '/biscuits-chocolates/biscuits' },
-          { label: 'Chocolates', href: '/biscuits-chocolates/chocolates' },
-          { label: 'Cookies', href: '/biscuits-chocolates/cookies' },
-          { label: 'Gift Boxes', href: '/biscuits-chocolates/gift-boxes' },
+          { label: 'Galletas', href: '/catalogo/biscuits-chocolates' },
+          { label: 'Chocolates', href: '/catalogo/biscuits-chocolates' },
+          { label: 'Cookies', href: '/catalogo/biscuits-chocolates' },
+          { label: 'Cajas de Regalo', href: '/catalogo/gifts' },
         ],
       },
       {
-        title: 'Pairings',
+        title: 'Maridajes',
         items: [
-          { label: 'For Tea', href: '/biscuits-chocolates/for-tea' },
-          { label: 'For Coffee', href: '/biscuits-chocolates/for-coffee' },
-          { label: 'Sharing Packs', href: '/biscuits-chocolates/sharing-packs' },
-          { label: 'New In', href: '/biscuits-chocolates/new-in' },
+          { label: 'Para Té', href: '/catalogo/biscuits-chocolates' },
+          { label: 'Para Café', href: '/catalogo/biscuits-chocolates' },
+          { label: 'Packs para Compartir', href: '/catalogo/biscuits-chocolates' },
+          { label: 'Novedades', href: '/catalogo/biscuits-chocolates' },
         ],
       },
       {
-        title: 'Collections',
+        title: 'Colecciones',
         items: [
-          { label: 'Luxury Treats', href: '/biscuits-chocolates/luxury-treats' },
-          { label: 'British Favourites', href: '/biscuits-chocolates/british-favourites' },
-          { label: 'Chocolate Collections', href: '/biscuits-chocolates/chocolate-collections' },
-          { label: 'Biscuit Assortments', href: '/biscuits-chocolates/biscuit-assortments' },
+          { label: 'Lujo', href: '/catalogo/biscuits-chocolates' },
+          { label: 'Favoritos Británicos', href: '/catalogo/biscuits-chocolates' },
+          { label: 'Selección de Chocolates', href: '/catalogo/biscuits-chocolates' },
+          { label: 'Surtido de Galletas', href: '/catalogo/biscuits-chocolates' },
         ],
       },
     ],
     promos: [
       {
-        href: '/biscuits-chocolates/pairings',
+        href: '/catalogo/biscuits-chocolates',
         imageSrc:
           'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=900&q=80',
       },
       {
-        href: '/biscuits-chocolates/chocolates',
+        href: '/catalogo/biscuits-chocolates',
         imageSrc:
           'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=900&q=80',
-      },
-    ],
-  },
-  Accessories: {
-    href: '/accessories',
-    columns: [
-      {
-        title: 'Shop accessories',
-        items: [
-          { label: 'Mugs & Cups', href: '/accessories/mugs' },
-          { label: 'Brewing Tools', href: '/accessories/brewing' },
-          { label: 'Tea Ware', href: '/accessories/tea-ware' },
-          { label: 'Gift Bags', href: '/accessories/gift-bags' },
-        ],
-      },
-      {
-        title: 'Discover',
-        items: [
-          { label: 'Travel Mugs', href: '/accessories/travel-mugs' },
-          { label: 'Tea Infusers', href: '/accessories/infusers' },
-          { label: 'Storage', href: '/accessories/storage' },
-          { label: 'Serving Pieces', href: '/accessories/serving' },
-        ],
-      },
-      {
-        title: 'Collections',
-        items: [
-          { label: 'Everyday Essentials', href: '/accessories/everyday' },
-          { label: 'Gifting Extras', href: '/accessories/gifting-extras' },
-          { label: 'Barista Style', href: '/accessories/barista' },
-          { label: 'Best Sellers', href: '/accessories/best-sellers' },
-        ],
-      },
-    ],
-    promos: [
-      {
-        href: '/accessories/brewing',
-        imageSrc:
-          'https://images.unsplash.com/photo-1517022812141-23620dba5c23?auto=format&fit=crop&w=900&q=80',
-      },
-      {
-        href: '/accessories/tea-ware',
-        imageSrc:
-          'https://images.unsplash.com/photo-1518459031867-a89b944bffe3?auto=format&fit=crop&w=900&q=80',
       },
     ],
   },

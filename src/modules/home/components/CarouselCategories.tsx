@@ -38,7 +38,7 @@ export function CategoriesCarousel({ slides }: CategoriesProps) {
               className="basis-1/3 pl-4 sm:basis-1/4 sm:pl-6 md:basis-1/5 lg:basis-1/6 lg:pl-8 xl:basis-1/7 xl:pl-12"
             >
               <Link
-                href={`/categoria/${slide.slug}`}
+                href={`/catalogo/${slide.slug}`}
                 className="flex size-full flex-col items-center gap-3"
               >
                 <div className="inline-flex aspect-square h-full w-full">

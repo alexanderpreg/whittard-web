@@ -1,3 +1,4 @@
+import { ChatbotWrapper } from '@/modules/chat/components/ChatbotWrapper';
 import Footer from '@/shared/layouts/footer/Footer';
 import Header from '@/shared/layouts/header/Header';
 
@@ -11,6 +12,7 @@ export default async function StoreLayout({
       <Header />
       {children}
       <Footer />
+      <ChatbotWrapper />
     </>
   );
 }

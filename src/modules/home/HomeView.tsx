@@ -1,7 +1,7 @@
 import { ProductCarousel } from '@/modules/products/components/product-carousel/ProductCarousel';
 import type { ProductCardData } from '@/modules/products/types/productCard';
 import { RecipeCarousel } from '@/modules/recipes/components/recipe-carousel/RecipeCarousel';
-import type { RecipeSlide } from '@/modules/recipes/types/recipes';
+import { MOCK_RECIPES } from '@/modules/recipes/mocks/recipes.mock';
 import { Container } from '@/shared/components/custom-ui/Container';
 import type { BannerSlide } from '@/shared/components/custom-ui/banner';
 import { Banner } from '@/shared/components/custom-ui/banner';
@@ -37,37 +37,32 @@ export const CATEGORY_SLIDES: CategorySlide[] = [
   {
     name: 'Tés',
     imageUrl: '/categoria1.png',
-    slug: 'tes',
+    slug: 'tea',
   },
   {
     name: 'Cafés',
     imageUrl: '/categoria1.png',
-    slug: 'cafes',
+    slug: 'coffee',
   },
   {
     name: 'Chocolate',
     imageUrl: '/categoria1.png',
-    slug: 'chocolate',
+    slug: 'hot-chocolate',
   },
   {
     name: 'Regalos',
     imageUrl: '/categoria1.png',
-    slug: 'regalos',
+    slug: 'gifts',
   },
   {
-    name: 'Chocolate',
+    name: 'Accesorios',
     imageUrl: '/categoria1.png',
-    slug: 'chocolate21321',
+    slug: 'equipment',
   },
   {
-    name: 'Regalos',
+    name: 'Galletas',
     imageUrl: '/categoria1.png',
-    slug: 'regalos4343',
-  },
-  {
-    name: 'Regalos',
-    imageUrl: '/categoria1.png',
-    slug: 'regalo21323s4343',
+    slug: 'biscuits-chocolates',
   },
 ];
 
@@ -103,7 +98,7 @@ const PRODUCTS: ProductCardData[] = [
   {
     productId: '3',
     variantId: '3a',
-    slug: 'jasmin-tea',
+    slug: 'jasmine-green-tea',
     name: 'Jasmine Green Tea',
     price: 48.0,
     promoPrice: 38.0,
@@ -114,7 +109,7 @@ const PRODUCTS: ProductCardData[] = [
   {
     productId: '4',
     variantId: '4a',
-    slug: 'chamomile-infusion',
+    slug: 'chamomile-honey',
     name: 'Manzanilla & Miel',
     price: 38.0,
     promoPrice: null,
@@ -146,41 +141,6 @@ const PRODUCTS: ProductCardData[] = [
   },
 ];
 
-const RECIPES: RecipeSlide[] = [
-  {
-    id: '1',
-    imageUrl: '/recipes/imagen-receta.png',
-    title: 'Matcha Latte Cremoso',
-    description:
-      'Aprende a preparar el matcha latte perfecto con nuestra guía paso a paso. Una bebida suave, cremosa y llena de antioxidantes.',
-    slug: 'matcha-latte-cremoso',
-  },
-  {
-    id: '2',
-    imageUrl: '/recipes/imagen-receta.png',
-    title: 'Muffins de Earl Grey',
-    description:
-      'Deliciosos muffins con el aroma inconfundible del té Earl Grey. Ideales para acompañar tu tarde de té.',
-    slug: 'muffins-earl-grey',
-  },
-  {
-    id: '3',
-    imageUrl: '/recipes/imagen-receta.png',
-    title: 'Chocolate Caliente Especiado',
-    description:
-      'Una receta indulgente con chocolate negro, canela y un toque de chile. Perfecto para los días fríos.',
-    slug: 'chocolate-caliente-especiado',
-  },
-  {
-    id: '4',
-    imageUrl: '/recipes/imagen-receta.png',
-    title: 'Té Helado de Durazno',
-    description:
-      'Refrescante té helado con durazno natural y hierbabuena. La bebida perfecta para el verano.',
-    slug: 'te-helado-durazno',
-  },
-];
-
 export default function HomeView() {
   return (
     <Container as="main" size="full" className="mb-8 flex-1">
@@ -190,7 +150,7 @@ export default function HomeView() {
         <SummerFavorites content={SUMMER_FAVORITES} />
         <ProductCarousel products={PRODUCTS} title="¿Qué hay de nuevo esta temporada?" />
         <SummerFavorites content={SUMMER_FAVORITES} />
-        <RecipeCarousel title="¿Has visto...?" recipes={RECIPES} />
+        <RecipeCarousel title="¿Has visto...?" recipes={MOCK_RECIPES} />
       </Container>
     </Container>
   );
