@@ -1,4 +1,4 @@
-import { ChatbotWrapper } from '@/modules/chat/components/ChatbotWrapper';
+import { ChatbotWrapper } from '@/modules/chat-bot/components/ChatbotWrapper';
 import Footer from '@/shared/layouts/footer/Footer';
 import Header from '@/shared/layouts/header/Header';
 

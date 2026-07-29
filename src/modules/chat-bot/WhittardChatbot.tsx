@@ -23,8 +23,8 @@ export function WhittardChatbot() {
           'z-drawer fixed right-6 bottom-24',
           'origin-bottom-right transition-all duration-200 ease-out',
           isOpen
-            ? 'pointer-events-auto visible scale-100 opacity-100'
-            : 'pointer-events-none invisible scale-95 opacity-0',
+            ? 'pointer-events-auto visible opacity-100'
+            : 'pointer-events-none invisible opacity-0',
         )}
       >
         <ChatbotWindow onClose={() => setIsOpen(false)} {...chatbotState} />

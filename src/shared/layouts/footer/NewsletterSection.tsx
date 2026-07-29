@@ -18,31 +18,32 @@ export function NewsletterSection() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="space-y-1">
-        <Heading as="h3" variant="cardTitle" className="text-white">
+    <div className="flex max-w-md flex-col gap-4">
+      <div className="space-y-4">
+        <Heading as="h3" variant="cardTitle" className="font-brand-avenir-lt! text-white">
           Suscríbete a nuestro boletín
         </Heading>
         <p className="text-sm text-white/80">
-          Recibe ofertas exclusivas, novedades y promociones directo en tu correo.
+          Únete a la familia Whittard para tener acceso a emocionante Promociones, nuevas Productos,
+          recetas, concursos y mucho más.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex w-full max-w-md items-center gap-2">
+      <form onSubmit={handleSubmit} className="flex w-full items-center gap-2">
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Ingresa tu correo electrónico"
           required
-          className="w-full rounded-md border border-white/20 bg-white/10 px-4 py-2.5 text-sm text-white placeholder-white/50 transition-colors focus:border-white focus:bg-white/20 focus:outline-none"
+          className="h-10 w-full rounded-md border border-white/20 bg-white/10 px-4 py-2.5 text-sm text-white placeholder-white/50 transition-colors focus:border-white focus:bg-white/20 focus:outline-none"
         />
         <button
           type="submit"
           aria-label="Suscribirse"
-          className="text-brand-primary inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-white px-5 py-2.5 text-sm font-semibold hover:bg-white/90"
+          className="text-brand-primary inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md bg-white px-5 py-2.5 text-sm font-semibold hover:bg-white/90"
         >
-          <span>Suscribirme</span>
+          <span className="sr-only">Suscribirme</span>
           <Send size={16} />
         </button>
       </form>

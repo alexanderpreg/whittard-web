@@ -27,35 +27,29 @@ export type FooterPayment = {
 
 export const footerColumns: FooterColumn[] = [
   {
-    title: 'Menú',
+    title: 'Sobre Whittard',
     links: [
-      { label: 'Té', href: '/tea' },
-      { label: 'Café', href: '/coffee' },
-      { label: 'Chocolate Caliente', href: '/hot-chocolate' },
-      { label: 'Regalos', href: '/gifts' },
-      { label: 'Equipos', href: '/equipment' },
-      { label: 'Galletas y Chocolate', href: '/biscuits-chocolates' },
-    ],
-  },
-  {
-    title: 'Información',
-    links: [
-      { label: 'Historia', href: '/about' },
-      { label: 'Tiendas', href: '/stores' },
-      { label: 'Recetas', href: '/recipes' },
+      { label: 'Nuestra Historia', href: '/about' },
+      { label: 'Nuestras Tiendas', href: '/stores' },
       { label: 'The Whittard Taste', href: '/taste' },
-      { label: 'Mi Cuenta', href: '/account' },
+      { label: 'Recetas', href: '/recipes' },
     ],
   },
   {
-    title: 'Ayuda',
+    title: 'Ayuda y Soporte',
     links: [
       { label: 'Contacto', href: '/contact' },
+      { label: 'Preguntas Frecuentes', href: '/faq' },
+      { label: 'Envíos y Devoluciones', href: '/delivery-returns' },
       { label: 'Libro de Reclamaciones', href: '/claims-book' },
+    ],
+  },
+  {
+    title: 'Legales',
+    links: [
       { label: 'Términos y Condiciones', href: '/terms' },
-      { label: 'Delivery and Returns', href: '/delivery-returns' },
-      { label: 'Preguntas y Respuestas', href: '/faq' },
-      { label: 'Políticas de Privacidad', href: '/privacy-policy' },
+      { label: 'Política de Privacidad', href: '/privacy-policy' },
+      { label: 'Política de Cookies', href: '/cookies' },
     ],
   },
 ];

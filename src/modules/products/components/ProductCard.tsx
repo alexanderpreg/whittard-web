@@ -1,7 +1,13 @@
-import { formatCurrency } from '@/lib/utils';
+'use client';
+
+import { Heart } from 'lucide-react';
+import Link from 'next/link';
+import { toast } from 'sonner';
+
+import { cn, formatCurrency } from '@/lib/utils';
 import type { ProductCardData } from '@/modules/products/types/productCard';
 import { AppImage } from '@/shared/components/custom-ui/app-image';
-import Link from 'next/link';
+import { useFavorites } from '../hooks/useFavorites';
 import { Stars } from './Starts';
 
 interface ProductCardProps {
@@ -9,28 +15,66 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const { toggleAsync, isFavorite } = useFavorites();
+  const active = isFavorite(product.productId, product.variantId);
   const hasPromo = product.promoPrice !== null;
   const lowStock = product.stock > 0 && product.stock <= 5;
 
   return (
     <article className="group flex h-full flex-col gap-3">
-      <Link href={`/producto/${product.slug}`} className="block">
-        <div className="border-brand-primary/50 relative aspect-square w-full overflow-hidden rounded-xs border">
-          <AppImage
-            src={product.image}
-            alt={product.name}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
-            className="h-full w-full object-cover transition-transform duration-400 ease-out group-hover:scale-105"
-            skeleton={false}
-            fallback={
-              <div className="flex size-full items-center justify-center p-4 text-center text-xs font-medium">
-                Error imagen {product.name}
-              </div>
-            }
+      <div className="relative">
+        <Link href={`/producto/${product.slug}`} className="block">
+          <div className="border-brand-primary/50 relative aspect-square w-full overflow-hidden rounded-xs border">
+            <AppImage
+              src={product.image}
+              alt={product.name}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+              className="h-full w-full object-cover transition-transform duration-400 ease-out group-hover:scale-105"
+              skeleton={false}
+              fallback={
+                <div className="flex size-full items-center justify-center p-4 text-center text-xs font-medium">
+                  Error imagen {product.name}
+                </div>
+              }
+            />
+          </div>
+        </Link>
+
+        <button
+          type="button"
+          onClick={() => {
+            const wasFavorite = active;
+            const item = {
+              productId: product.productId,
+              variantId: product.variantId,
+              slug: product.slug,
+              name: product.name,
+              price: product.price,
+              image: product.image,
+            };
+            toast.promise(toggleAsync(item), {
+              loading: wasFavorite ? 'Eliminando de favoritos...' : 'Guardando en favoritos...',
+              success: () =>
+                wasFavorite
+                  ? `${product.name} se eliminó de favoritos`
+                  : `${product.name} se agregó a favoritos`,
+              error: 'Error al actualizar favoritos',
+            });
+          }}
+          className="absolute top-2 right-2 z-10 flex size-8 items-center justify-center rounded-full bg-white/80 shadow-xs transition-colors hover:bg-white"
+          aria-label={active ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+        >
+          <Heart
+            className={cn(
+              'size-4',
+              active
+                ? 'fill-red-500 text-red-500'
+                : 'text-brand-primary hover:fill-red-500 hover:text-red-500',
+            )}
           />
-        </div>
-      </Link>
+        </button>
+      </div>
 
       <div className="flex flex-1 flex-col gap-2">
         <Link href={`/producto/${product.slug}`} className="block">

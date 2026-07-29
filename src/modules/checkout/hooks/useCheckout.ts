@@ -63,6 +63,7 @@ export function useCheckout() {
   });
 
   const { watch, setValue, handleSubmit } = form;
+  // eslint-disable-next-line react-hooks/incompatible-library
   const deliveryMethod = watch('deliveryMethod');
 
   const [selectedStore, setSelectedStoreState] = useState<PickupStore>(() => {

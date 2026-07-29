@@ -28,7 +28,7 @@ const CONTACT_DATA: ContactPageData = {
 export function ContactView() {
   return (
     <Container as="main" size="full" className="mb-6 flex-1">
-      <PageHeroBanner title="Contáctanos" imageUrl="/banner-static.png" />
+      <PageHeroBanner title="Atención al Cliente" imageUrl="/banner-static.png" />
 
       <div className="mx-auto mt-14 mb-14 max-w-[713px] px-4">
         <ContactChannels channels={CONTACT_DATA.channels} />
