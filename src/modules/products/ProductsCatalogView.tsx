@@ -9,7 +9,7 @@ import type { ProductCardData } from '@/modules/products/types/productCard';
 import { Container } from '@/shared/components/custom-ui/Container';
 import { PageBreadcrumb } from '@/shared/components/custom-ui/PageBreadcrumb';
 import { PageHeroBanner } from '@/shared/components/custom-ui/PageHeroBanner';
-import { FilterGroup } from './FilterGroup';
+import { FilterGroup } from './components/catalog/FilterGroup';
 
 const CATEGORY_LABELS: Record<string, string> = {
   tea: 'Té',
@@ -294,7 +294,7 @@ export function ProductsCatalogView({ categorySlug, subcategorySlug }: ProductsC
       <Container className="py-4 md:py-6">
         <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
           <aside className="space-y-4">
-            <div className="rounded-sm border border-gray-200 bg-white p-4 shadow-sm lg:sticky lg:top-4">
+            <div className="rounded-xs border border-gray-200 bg-white p-4 lg:sticky lg:top-4">
               <div className="mb-4 flex items-center justify-between gap-3">
                 <p className="text-sm text-gray-600">Filtros</p>
                 <button

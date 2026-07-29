@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import { ProductsCatalogView } from '@/modules/products/components/catalog/ProductsCatalogView';
+import { ProductsCatalogView } from '@/modules/products/ProductsCatalogView';
 
 const SUPPORTED_CATEGORIES = new Set([
   'tea',
