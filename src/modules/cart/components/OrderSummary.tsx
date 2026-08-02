@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { formatCurrency } from '@/lib/utils';
 import { AppImage } from '@/shared/components/custom-ui/app-image';
 import { Button } from '@/shared/components/shadcn-ui/button';
@@ -29,12 +31,14 @@ export function OrderSummary({ subtotal, delivery, total }: OrderSummaryProps) {
         </div>
       </div>
 
-      <Button
-        type="button"
-        className="bg-brand-primary hover:bg-brand-primary/90 h-12 w-full rounded-xs text-white"
-      >
-        PAGAR
-      </Button>
+      <Link href="/checkout" className="block">
+        <Button
+          type="button"
+          className="bg-brand-primary hover:bg-brand-primary/90 h-12 w-full rounded-xs text-sm font-semibold tracking-wider text-white uppercase"
+        >
+          Continuar Compra
+        </Button>
+      </Link>
 
       <div className="flex w-full flex-wrap items-center justify-center gap-2.5">
         {footerPayments.map((payment) => (

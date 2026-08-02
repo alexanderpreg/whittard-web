@@ -1,8 +1,11 @@
+import { useCartItemCount } from '@/modules/cart/hooks/useCart';
 import { Container } from '@/shared/components/custom-ui/Container';
 import { ActiveLink } from '@/shared/navigation/ActiveLink';
 import { utilityNavigationItems } from '@/shared/navigation/routes';
 
 export function UtilityNavigation() {
+  const cartCount = useCartItemCount();
+
   return (
     <Container
       as="nav"
@@ -13,6 +16,7 @@ export function UtilityNavigation() {
       <ul className="flex w-full items-center gap-8">
         {utilityNavigationItems.map((item) => {
           const Icon = item.icon;
+          const isCart = item.href === '/carrito';
 
           return (
             <li key={item.href}>
@@ -23,7 +27,14 @@ export function UtilityNavigation() {
                 includeSubpath={item.includeSubpath}
               >
                 <span>{item.label}</span>
-                <Icon strokeWidth={1.5} className="size-4.5" />
+                <div className="relative">
+                  <Icon strokeWidth={1.5} className="size-4.5" />
+                  {isCart && cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 flex size-4 items-center justify-center rounded-full bg-amber-400 text-[10px] leading-none font-bold text-white">
+                      {cartCount > 9 ? '9+' : cartCount}
+                    </span>
+                  )}
+                </div>
               </ActiveLink>
             </li>
           );

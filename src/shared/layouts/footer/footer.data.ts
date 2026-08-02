@@ -36,17 +36,12 @@ export const footerColumns: FooterColumn[] = [
     ],
   },
   {
-    title: 'Ayuda y Soporte',
+    title: 'Soporte y Legales',
     links: [
       { label: 'Contacto', href: '/contact' },
       { label: 'Preguntas Frecuentes', href: '/faq' },
       { label: 'Envíos y Devoluciones', href: '/delivery-returns' },
       { label: 'Libro de Reclamaciones', href: '/claims-book' },
-    ],
-  },
-  {
-    title: 'Legales',
-    links: [
       { label: 'Términos y Condiciones', href: '/terms' },
       { label: 'Política de Privacidad', href: '/privacy-policy' },
       { label: 'Política de Cookies', href: '/cookies' },

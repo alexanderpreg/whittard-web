@@ -5,11 +5,11 @@ import { ProductCarousel } from '@/modules/products/components/product-carousel/
 import type { ProductCardData } from '@/modules/products/types/productCard';
 import { Container } from '@/shared/components/custom-ui/Container';
 import { PageBreadcrumb } from '@/shared/components/custom-ui/PageBreadcrumb';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { CartItemCard } from './components/CartItemCard';
 import { CouponSection } from './components/CouponSection';
 import { OrderSummary } from './components/OrderSummary';
-import { MOCK_CART_ITEMS } from './mocks/cart.mock';
+import { useCart } from './hooks/useCart';
 
 const CART_BREADCRUMBS = [{ label: 'Inicio', href: '/' }, { label: 'Carrito' }];
 
@@ -60,22 +60,31 @@ const RELATED_PRODUCTS: ProductCardData[] = [
   },
 ];
 
-const DELIVERY_COST = 10;
-const FREE_SHIPPING_THRESHOLD = 50;
-
 export function CartView() {
-  const [items, setItems] = useState(MOCK_CART_ITEMS);
+  const { items, totals, isLoading, updateQuantity, removeItem } = useCart();
   const [coupon, setCoupon] = useState('');
   const [couponState, setCouponState] = useState<'idle' | 'valid' | 'invalid'>('idle');
 
-  const subtotal = useMemo(
-    () => items.reduce((acc, item) => acc + (item.promoPrice ?? item.price) * item.quantity, 0),
-    [items],
-  );
+  const shippingLeft = Math.max(50 - totals.subtotal, 0);
 
-  const delivery = subtotal >= FREE_SHIPPING_THRESHOLD || subtotal === 0 ? 0 : DELIVERY_COST;
-  const total = subtotal + delivery;
-  const shippingLeft = Math.max(FREE_SHIPPING_THRESHOLD - subtotal, 0);
+  if (isLoading) {
+    return (
+      <Container as="main" className="flex flex-1 items-center justify-center py-20">
+        <p className="text-lg text-gray-500">Cargando carrito...</p>
+      </Container>
+    );
+  }
+
+  if (items.length === 0) {
+    return (
+      <Container as="main" className="flex flex-1 flex-col items-center justify-center gap-4 py-20">
+        <PageBreadcrumb items={CART_BREADCRUMBS} className="mb-6 w-full" />
+        <h1 className="font-brand-elephant text-brand-primary text-3xl md:text-4xl">Mi Carrito</h1>
+        <p className="text-lg text-gray-500">Tu carrito está vacío</p>
+        <p className="text-sm text-gray-400">Agrega productos para empezar tu compra</p>
+      </Container>
+    );
+  }
 
   return (
     <Container as="main" className="py-6 md:py-10">
@@ -101,7 +110,6 @@ export function CartView() {
           </p>
         </header>
 
-        {/* Layout principal que distribuye el ancho correctamente */}
         <div className="w-full space-y-8">
           <div className="w-full divide-y divide-gray-200 border-y border-gray-300">
             {items.map((item) => (
@@ -109,20 +117,17 @@ export function CartView() {
                 key={item.id}
                 item={item}
                 onUpdateQuantity={(id, quantity) => {
-                  setItems((current) =>
-                    current.map((currentItem) =>
-                      currentItem.id === id ? { ...currentItem, quantity } : currentItem,
-                    ),
-                  );
+                  const [productId, variantId] = id.split('_');
+                  updateQuantity(productId, variantId, quantity);
                 }}
                 onRemove={(id) => {
-                  setItems((current) => current.filter((currentItem) => currentItem.id !== id));
+                  const [productId, variantId] = id.split('_');
+                  removeItem(productId, variantId);
                 }}
               />
             ))}
           </div>
 
-          {/* Sección Inferior: Cupón (Izquierda) vs Resumen de Totales (Derecha) */}
           <div className="grid gap-8 lg:grid-cols-[1.5fr_0.5fr] lg:items-start">
             <CouponSection
               coupon={coupon}
@@ -133,11 +138,14 @@ export function CartView() {
               }
             />
 
-            <OrderSummary subtotal={subtotal} delivery={delivery} total={total} />
+            <OrderSummary
+              subtotal={totals.subtotal}
+              delivery={totals.shipping}
+              total={totals.total}
+            />
           </div>
         </div>
 
-        {/* Carrusel de Productos Similares */}
         <ProductCarousel products={RELATED_PRODUCTS} title="Productos Similares" />
       </section>
     </Container>

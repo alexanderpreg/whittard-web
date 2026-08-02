@@ -1,7 +1,7 @@
 import { Container } from '@/shared/components/custom-ui/Container';
 import { Heading } from '@/shared/components/custom-ui/Heading';
 import { Text } from '@/shared/components/custom-ui/Text';
-import { ClaimsBookForm } from './Components/ClaimsBookForm';
+import { ClaimsBookForm } from './components/ClaimsBookForm';
 import type { ClaimsBookContent } from './types/claims-book';
 
 const CLAIMS_CONTENT: ClaimsBookContent = {

@@ -5,10 +5,11 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 
 import { cn, formatCurrency } from '@/lib/utils';
+import { useCart } from '@/modules/cart/hooks/useCart';
 import type { ProductCardData } from '@/modules/products/types/productCard';
 import { AppImage } from '@/shared/components/custom-ui/app-image';
 import { useFavorites } from '../hooks/useFavorites';
-import { Stars } from './Starts';
+import { Stars } from './Stars';
 
 interface ProductCardProps {
   product: ProductCardData;
@@ -16,6 +17,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { toggleAsync, isFavorite } = useFavorites();
+  const { addItem } = useCart();
   const active = isFavorite(product.productId, product.variantId);
   const hasPromo = product.promoPrice !== null;
   const lowStock = product.stock > 0 && product.stock <= 5;
@@ -110,6 +112,21 @@ export function ProductCard({ product }: ProductCardProps) {
       {product.stock > 0 && (
         <button
           type="button"
+          onClick={() => {
+            addItem({
+              productId: product.productId,
+              variantId: product.variantId,
+              sku: product.productId,
+              name: product.name,
+              slug: product.slug,
+              image: product.image,
+              unitPrice: product.price,
+              promoPrice: product.promoPrice,
+              stock: product.stock,
+              maxQuantity: product.stock,
+            });
+            toast.success(`${product.name} agregado al carrito`);
+          }}
           className="bg-brand-primary hover:border-brand-primary inline-flex h-10 items-center justify-center border border-gray-300 px-3 py-2 text-sm font-medium text-white opacity-100 transition-colors md:mt-auto md:border-0 md:px-0 md:py-0 md:text-left md:opacity-0 md:group-hover:opacity-100"
         >
           Agregar al carrito

@@ -13,7 +13,7 @@ interface CartItemCardProps {
 }
 
 export function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardProps) {
-  const unitPrice = item.promoPrice ?? item.price;
+  const unitPrice = item.promoPrice ?? item.unitPrice;
 
   return (
     <article className="flex flex-col gap-4 border-b border-gray-200 p-4 last:border-b-0 md:grid md:grid-cols-[auto_auto_auto] md:items-center md:gap-6 md:py-5">
@@ -38,7 +38,6 @@ export function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardP
       </div>
 
       <div className="flex items-center gap-2">
-        cant.
         <QuantitySelector
           quantity={item.quantity}
           max={item.stock}

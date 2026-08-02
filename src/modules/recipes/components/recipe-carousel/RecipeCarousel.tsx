@@ -36,6 +36,7 @@ export function RecipeCarousel({ title, recipes }: RecipeCarouselProps) {
         opts={{
           align: 'start',
           loop: true,
+          slidesToScroll: 'auto',
         }}
         className="w-full"
       >

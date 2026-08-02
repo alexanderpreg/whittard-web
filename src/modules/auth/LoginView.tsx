@@ -4,7 +4,7 @@ import { Heading } from '@/shared/components/custom-ui/Heading';
 import { PageBreadcrumb } from '@/shared/components/custom-ui/PageBreadcrumb';
 import { ScrollToTop } from '@/shared/components/custom-ui/ScrollToTop';
 import { ImageOff } from 'lucide-react';
-import { LoginForm } from './components/LoginForm.';
+import { LoginForm } from './components/LoginForm';
 
 const LOGIN_BREADCRUMBS = [
   { label: 'Inicio', href: '/' },

@@ -5,15 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { MOCK_PICKUP_STORE, MOCK_SUMMARY } from '../mocks/checkout.mock';
+import { useCartStore } from '@/modules/cart/store/cart.store';
+import { MOCK_PICKUP_STORE } from '../mocks/checkout.mock';
 import { checkoutSchema, type CheckoutSchemaType } from '../schema/checkout-schema';
-import {
-  loadCheckoutFormData,
-  loadCheckoutSummary,
-  loadOrderId,
-  saveCheckoutData,
-} from '../store/checkout-storage';
-import type { CheckoutFormData, PickupStore } from '../types/checkout';
+import { loadCheckoutFormData, loadOrderId, saveCheckoutData } from '../store/checkout-storage';
+import type { CheckoutFormData, CheckoutSummaryData, PickupStore } from '../types/checkout';
 
 function buildDefaultValues(): CheckoutSchemaType {
   const stored = loadCheckoutFormData();
@@ -53,6 +49,25 @@ function buildDefaultValues(): CheckoutSchemaType {
   };
 }
 
+function buildSummaryFromCart(deliveryMethod: 'delivery' | 'pickup'): CheckoutSummaryData {
+  const { items, totals } = useCartStore.getState();
+  const delivery = deliveryMethod === 'pickup' ? 0 : totals.shipping;
+
+  return {
+    subtotal: totals.subtotal,
+    delivery,
+    discount: totals.discount,
+    total: totals.subtotal - totals.discount + delivery,
+    items: items.map((item, index) => ({
+      id: index + 1,
+      name: item.name,
+      image: item.image,
+      quantity: item.quantity,
+      price: item.promoPrice ?? item.unitPrice,
+    })),
+  };
+}
+
 export function useCheckout() {
   const router = useRouter();
 
@@ -71,24 +86,12 @@ export function useCheckout() {
     return stored?.selectedStore ?? MOCK_PICKUP_STORE;
   });
 
-  const [summary, setSummary] = useState(() => {
-    const stored = loadCheckoutSummary();
-    if (stored) return stored;
-    const delivery = deliveryMethod === 'pickup' ? 0 : MOCK_SUMMARY.delivery;
-    return {
-      ...MOCK_SUMMARY,
-      delivery,
-      total: MOCK_SUMMARY.subtotal + delivery - MOCK_SUMMARY.discount,
-    };
-  });
+  const [summary, setSummary] = useState<CheckoutSummaryData>(() =>
+    buildSummaryFromCart(deliveryMethod),
+  );
 
   const refreshSummary = useCallback((method: 'delivery' | 'pickup') => {
-    const delivery = method === 'pickup' ? 0 : MOCK_SUMMARY.delivery;
-    setSummary({
-      ...MOCK_SUMMARY,
-      delivery,
-      total: MOCK_SUMMARY.subtotal + delivery - MOCK_SUMMARY.discount,
-    });
+    setSummary(buildSummaryFromCart(method));
   }, []);
 
   const setDeliveryMethod = useCallback(
@@ -107,12 +110,8 @@ export function useCheckout() {
           selectedStore,
         };
         const existingOrderId = loadOrderId();
-        if (!existingOrderId) {
-          const orderId = 'ORD-1024';
-          saveCheckoutData(formData, summary, orderId);
-        } else {
-          saveCheckoutData(formData, summary, existingOrderId);
-        }
+        const orderId = existingOrderId ?? 'ORD-1024';
+        saveCheckoutData(formData, summary, orderId);
         router.push('/checkout/step-2');
       }),
     [handleSubmit, selectedStore, summary, router],

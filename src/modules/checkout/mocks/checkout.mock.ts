@@ -10,7 +10,7 @@ export const MOCK_DELIVERY_METHODS: DeliveryMethod[] = [
     id: 'delivery',
     name: 'Delivery',
     description: 'Recibe tu pedido en la dirección indicada.',
-    price: 12.9,
+    price: 10,
   },
   {
     id: 'pickup',

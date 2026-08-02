@@ -1,9 +1,9 @@
 import { Heart, MapPin, ShoppingBag, User } from 'lucide-react';
 
 export const utilityNavigationItems = [
-  { label: 'Favoritos', href: '/wishlist', icon: Heart, includeSubpath: false },
+  { label: 'Favoritos', href: '/mi-cuenta/deseos', icon: Heart, includeSubpath: false },
   { label: 'Tiendas', href: '/stores', icon: MapPin, includeSubpath: false },
-  { label: 'Mi cuenta', href: '/account', icon: User, includeSubpath: true },
+  { label: 'Mi cuenta', href: '/mi-cuenta', icon: User, includeSubpath: true },
   { label: 'Carrito', href: '/carrito', icon: ShoppingBag, includeSubpath: false },
 ] as const;
 

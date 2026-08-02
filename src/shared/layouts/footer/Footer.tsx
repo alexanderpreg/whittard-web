@@ -1,4 +1,4 @@
-import { Clock, Mail, Phone } from 'lucide-react';
+import { Mail, Phone } from 'lucide-react';
 import Link from 'next/link';
 
 import { AppImage } from '@/shared/components/custom-ui/app-image';
@@ -15,8 +15,8 @@ export default function Footer() {
   return (
     <footer className="bg-brand-primary text-white">
       <Container as="div" size="container" className="space-y-10 px-4 pt-10">
-        <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20 xl:gap-4 2xl:gap-8">
-          <div className="space-y-4">
+        <div className="grid gap-8 lg:grid-cols-[0.5fr_1.5fr] lg:gap-20 xl:gap-4 2xl:gap-8">
+          <div className="space-y-6">
             <Link href="/" aria-label="Inicio" className="inline-flex">
               <AppImage
                 src="/logo-whittard.png"
@@ -32,8 +32,25 @@ export default function Footer() {
                 }
               />
             </Link>
-            <div className="flex flex-col gap-4">
-              <div className="mt-3 mb-8 flex flex-wrap items-center gap-5">
+            <div className="flex flex-col gap-8">
+              {/* Teléfono */}
+              <div className="space-y-3">
+                <Link href="tel:+51999999999" className="group flex items-center gap-3">
+                  <Phone size={18} className="shrink-0" />
+                  <span className="text-sm underline-offset-4 group-hover:underline">
+                    +51 999 999 999
+                  </span>
+                </Link>
+
+                {/* Email */}
+                <Link href="mailto:branding@onza.com" className="group flex items-center gap-3">
+                  <Mail size={18} className="shrink-0" />
+                  <span className="text-sm underline-offset-4 group-hover:underline">
+                    branding@onza.com
+                  </span>
+                </Link>
+              </div>
+              <div className="flex flex-wrap items-center gap-5">
                 {footerSocials.map((social) => {
                   return (
                     <a
@@ -56,12 +73,30 @@ export default function Footer() {
                   );
                 })}
               </div>
-
-              <NewsletterSection />
             </div>
           </div>
 
-          <div className="grid justify-between gap-8 sm:grid-cols-2 xl:grid-cols-[auto_auto_auto_auto]">
+          <div className="grid justify-between gap-8 md:grid-cols-2 xl:grid-cols-[auto_auto_auto_auto]">
+            <div className="space-y-4">
+              <Heading as="h3" variant="cardTitle" className="font-brand-avenir-lt! text-white">
+                Oficina Central
+              </Heading>
+              <Link
+                href={officeContact.href}
+                className="block max-w-xs text-sm leading-relaxed text-white underline-offset-4 hover:underline"
+              >
+                Av. Mariscal La Mar 326
+                <br />
+                Miraflores - Lima, Perú
+              </Link>
+
+              <div className="space-y-2">
+                <Heading as="h3" variant="cardTitle" className="font-brand-avenir-lt! text-white">
+                  Horario de Atención
+                </Heading>
+                <p className="text-sm text-white">Lunes-Viernes: 8:00 AM - 6:00 PM</p>
+              </div>
+            </div>
             {footerColumns.map((column) => (
               <div key={column.title} className="space-y-4">
                 <Heading as="h3" variant="cardTitle" className="font-brand-avenir-lt! text-white">
@@ -84,44 +119,7 @@ export default function Footer() {
             ))}
 
             <div className="space-y-4">
-              <Heading as="h3" variant="cardTitle" className="font-brand-avenir-lt! text-white">
-                Contacto
-              </Heading>
-
-              <div className="space-y-4 text-sm text-white">
-                {/* Dirección */}
-                <Link
-                  href={officeContact.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-start gap-3"
-                >
-                  {/* <MapPin size={18} className="mt-0.5 shrink-0" /> */}
-                  <span className="underline-offset-4 group-hover:underline lg:max-w-62.5">
-                    Av. Mariscal La Mar 326, Miraflores - Lima, Perú
-                  </span>
-                </Link>
-
-                {/* Horario */}
-                <div className="flex items-center gap-3">
-                  <Clock size={18} className="shrink-0" />
-                  <span>Lun - Vie: 8:00 AM - 6:00 PM</span>
-                </div>
-
-                {/* Teléfono */}
-                <Link href="tel:+51999999999" className="group flex items-center gap-3">
-                  <Phone size={18} className="shrink-0" />
-                  <span className="underline-offset-4 group-hover:underline">+51 999 999 999</span>
-                </Link>
-
-                {/* Email */}
-                <Link href="mailto:branding@onza.com" className="group flex items-center gap-3">
-                  <Mail size={18} className="shrink-0" />
-                  <span className="underline-offset-4 group-hover:underline">
-                    branding@onza.com
-                  </span>
-                </Link>
-              </div>
+              <NewsletterSection />
             </div>
           </div>
         </div>
