@@ -2,6 +2,7 @@
 
 import { Heart } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { cn, formatCurrency } from '@/lib/utils';
@@ -18,17 +19,25 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const { toggleAsync, isFavorite } = useFavorites();
   const { addItem } = useCart();
+  const [hovered, setHovered] = useState(false);
+
   const active = isFavorite(product.productId, product.variantId);
   const hasPromo = product.promoPrice !== null;
   const lowStock = product.stock > 0 && product.stock <= 5;
+  const isOutOfStock = product.stock === 0;
+  const imageSrc = hovered && product.hoverImage ? product.hoverImage : product.image;
 
   return (
-    <article className="group flex h-full flex-col gap-3">
+    <article
+      className="group flex h-full flex-col gap-3"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       <div className="relative">
         <Link href={`/producto/${product.slug}`} className="block">
           <div className="border-brand-primary/50 relative aspect-square w-full overflow-hidden rounded-xs border">
             <AppImage
-              src={product.image}
+              src={imageSrc}
               alt={product.name}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
@@ -52,7 +61,7 @@ export function ProductCard({ product }: ProductCardProps) {
               variantId: product.variantId,
               slug: product.slug,
               name: product.name,
-              price: product.price,
+              price: product.promoPrice ?? product.price,
               image: product.image,
             };
             toast.promise(toggleAsync(item), {
@@ -79,6 +88,12 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
 
       <div className="flex flex-1 flex-col gap-2">
+        {product.brand && (
+          <span className="text-[10px] tracking-[0.18em] text-gray-400 uppercase">
+            {product.brand}
+          </span>
+        )}
+
         <Link href={`/producto/${product.slug}`} className="block">
           <span className="line-clamp-2 text-sm leading-tight font-medium text-gray-800">
             {product.name}
@@ -102,21 +117,47 @@ export function ProductCard({ product }: ProductCardProps) {
 
         <Stars rating={product.rating} />
 
+        {product.badges && product.badges.length > 0 && (
+          <div className="flex items-center gap-1.5">
+            {product.badges.map((badge) =>
+              badge.imageUrl ? (
+                <AppImage
+                  key={badge.label}
+                  src={badge.imageUrl}
+                  alt={badge.label}
+                  width={20}
+                  height={20}
+                  className="rounded-full border border-gray-200 bg-white object-contain"
+                  skeleton={false}
+                />
+              ) : (
+                <span
+                  key={badge.label}
+                  title={badge.label}
+                  className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-500"
+                >
+                  {badge.label}
+                </span>
+              ),
+            )}
+          </div>
+        )}
+
         {lowStock && (
           <span className="text-xs font-medium text-orange-600">¡Solo quedan {product.stock}!</span>
         )}
 
-        {product.stock === 0 && <span className="text-xs font-medium text-red-600">Agotado</span>}
+        {isOutOfStock && <span className="text-xs font-medium text-red-600">Agotado</span>}
       </div>
 
-      {product.stock > 0 && (
+      {!isOutOfStock && (
         <button
           type="button"
           onClick={() => {
             addItem({
               productId: product.productId,
               variantId: product.variantId,
-              sku: product.productId,
+              sku: product.variantId,
               name: product.name,
               slug: product.slug,
               image: product.image,

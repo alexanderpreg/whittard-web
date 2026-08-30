@@ -1,5 +1,3 @@
-'use server';
-
 import { cookies } from 'next/headers';
 
 import { API_BACKEND_URL } from '@/config/env';

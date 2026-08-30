@@ -12,6 +12,8 @@ export interface VariantOption {
   sublabel?: string;
   price?: number;
   iconUrl?: string;
+  /** Swatch de color cuando la opción no tiene imagen. */
+  colorHex?: string;
   discountBadge?: string;
   isAvailable: boolean;
 }
@@ -27,23 +29,4 @@ export interface ProductInformationSection {
   id: string;
   title: string;
   content: string;
-}
-
-export interface ProductDetail {
-  id: string;
-  slug: string;
-  name: string;
-  tagline: string;
-  description: string;
-  price: number;
-  promoPrice: number | null;
-  images: ProductMedia[];
-  rating: number;
-  reviewCount: number;
-  stock: number;
-  sku: string;
-  category: string;
-  badges: string[];
-  tags?: string[];
-  variantGroups?: VariantGroup[];
 }

@@ -1,16 +1,20 @@
 'use client';
 
 import { formatCurrency } from '@/lib/utils';
+import { useCart } from '@/modules/cart/hooks/useCart';
 import { ProductRating } from '@/modules/products/components/ProductRating';
+import { Stars } from '@/modules/products/components/Stars';
+import { DEFAULT_PRODUCT_IMAGE } from '@/modules/products/constants';
+import type { VariantGroup } from '@/modules/products/types/productDetail';
 import type {
-  ProductDetail,
-  ProductInformationSection,
-  VariantGroup,
-} from '@/modules/products/types/productDetail';
+  StorefrontProductDetail,
+  StorefrontVariant,
+} from '@/modules/products/types/storefront';
+import { buildInformationSections } from '@/modules/products/utils/storefront-product-detail';
 import { Badge } from '@/shared/components/shadcn-ui/badge';
 import { Button } from '@/shared/components/shadcn-ui/button';
 import { AlertTriangle } from 'lucide-react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
 import { FavoriteButton } from './FavoriteButton';
 import { ProductAttributeBadges } from './ProductAttributeBadges';
@@ -19,143 +23,119 @@ import { ProductShare } from './ProductShare';
 import { QuantitySelector } from './QuantitySelector';
 import { VariantSelector } from './VariantSelector';
 
-function simulateApi<T>(data: T): Promise<T> {
-  return new Promise((resolve) => setTimeout(() => resolve(data), 1000));
-}
-
-function getDefaultOptions(groups: VariantGroup[]): Record<string, string> {
-  const defaults: Record<string, string> = {};
-  for (const group of groups) {
-    const firstAvailable = group.options.find((o) => o.isAvailable);
-    if (firstAvailable) {
-      defaults[group.id] = firstAvailable.id;
-    }
-  }
-  return defaults;
-}
-
-function getSelectedPrice(
-  basePrice: number,
-  groups: VariantGroup[],
-  selectedOptions: Record<string, string>,
-): number {
-  for (const group of groups) {
-    const selectedId = selectedOptions[group.id];
-    if (!selectedId) continue;
-    const option = group.options.find((o) => o.id === selectedId);
-    if (option?.price !== undefined) return option.price;
-  }
-  return basePrice;
-}
-
-function getSelectedAvailability(
-  groups: VariantGroup[],
-  selectedOptions: Record<string, string>,
-): boolean {
-  for (const group of groups) {
-    const selectedId = selectedOptions[group.id];
-    if (!selectedId) return false;
-    const option = group.options.find((o) => o.id === selectedId);
-    if (!option?.isAvailable) return false;
-  }
-  return true;
-}
-
 interface ProductInfoProps {
-  product: ProductDetail;
+  product: StorefrontProductDetail;
+  groups: VariantGroup[];
+  selectedValues: Record<string, string>;
+  selectedVariant: StorefrontVariant | null;
+  onOptionChange: (groupId: string, optionId: string) => void;
 }
 
-export function ProductInfo({ product }: ProductInfoProps) {
-  const hasVariants = product.variantGroups && product.variantGroups.length > 0;
+export function ProductInfo({
+  product,
+  groups,
+  selectedValues,
+  selectedVariant,
+  onOptionChange,
+}: ProductInfoProps) {
+  const { addItem } = useCart();
+  const hasVariants = groups.length > 0;
 
-  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>(() =>
-    hasVariants ? getDefaultOptions(product.variantGroups!) : {},
-  );
   const [quantity, setQuantity] = useState(1);
   const [userRating, setUserRating] = useState(0);
 
-  const displayPrice = hasVariants
-    ? getSelectedPrice(product.price, product.variantGroups!, selectedOptions)
-    : product.price;
-  const displayPromo = product.promoPrice;
-  const isOutOfStock = hasVariants
-    ? !getSelectedAvailability(product.variantGroups!, selectedOptions)
-    : product.stock === 0;
-  const maxStock = hasVariants ? (isOutOfStock ? 0 : 99) : product.stock;
+  const effectivePrice = selectedVariant?.effective_price ?? selectedVariant?.price ?? 0;
+  const regularPrice = selectedVariant?.price ?? effectivePrice;
+  const onSale =
+    selectedVariant?.on_sale && selectedVariant.price !== null && effectivePrice < regularPrice;
+  const isOutOfStock = selectedVariant ? !selectedVariant.in_stock : true;
+  const maxStock = selectedVariant?.available_stock ?? 0;
 
-  const hasPromo = displayPromo !== null;
+  const badges: string[] = [
+    ...(onSale ? ['Oferta'] : []),
+    ...(product.attributions ?? []).map((attribution) => attribution.name),
+  ];
 
-  const accordionSections: ProductInformationSection[] = product.description
-    ? [{ id: 'description', title: 'Descripción', content: '<p>' + product.description + '</p>' }]
-    : [];
-
-  const handleOptionChange = useCallback((groupId: string, optionId: string) => {
-    setSelectedOptions((prev) => ({ ...prev, [groupId]: optionId }));
-  }, []);
-
-  const variantId = useMemo(
-    () => Object.values(selectedOptions).sort().join('-'),
-    [selectedOptions],
+  const handleOptionChange = useCallback(
+    (groupId: string, optionId: string) => onOptionChange(groupId, optionId),
+    [onOptionChange],
   );
+
+  const handleAddToCart = () => {
+    if (!selectedVariant || !selectedVariant.in_stock) return;
+
+    addItem({
+      productId: product.id,
+      variantId: selectedVariant.id,
+      sku: selectedVariant.sku,
+      name: product.name,
+      slug: product.slug,
+      image:
+        selectedVariant.media.find((media) => media.type === 'IMAGE')?.url ?? DEFAULT_PRODUCT_IMAGE,
+      unitPrice: regularPrice,
+      promoPrice: onSale ? effectivePrice : null,
+      stock: selectedVariant.available_stock,
+      maxQuantity: selectedVariant.available_stock,
+      quantity,
+    });
+    toast.success(`${product.name} agregado a la cesta`);
+  };
 
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-2">
-        <div className="flex flex-wrap items-center gap-2">
-          {product.badges.map((badge) => (
-            <Badge key={badge} variant="secondary" className="text-[11px] tracking-wider uppercase">
-              {badge}
-            </Badge>
-          ))}
-        </div>
+        {badges.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            {badges.map((badge) => (
+              <Badge
+                key={badge}
+                variant="secondary"
+                className="text-[11px] tracking-wider uppercase"
+              >
+                {badge}
+              </Badge>
+            ))}
+          </div>
+        )}
 
         <h1 className="font-brand-elephant text-brand-primary text-2xl leading-tight md:text-3xl">
           {product.name}
         </h1>
+
+        {product.brand && (
+          <p className="text-xs tracking-[0.2em] text-gray-400 uppercase">{product.brand}</p>
+        )}
       </div>
 
       <div className="flex items-center gap-3">
         <div className="flex items-baseline gap-2">
-          {hasPromo ? (
+          {onSale ? (
             <>
               <span className="text-2xl font-bold text-red-600">
-                {formatCurrency(displayPromo!)}
+                {formatCurrency(effectivePrice)}
               </span>
               <span className="text-brand-secondary text-lg line-through">
-                {formatCurrency(displayPrice)}
+                {formatCurrency(regularPrice)}
               </span>
             </>
           ) : (
-            <span className="text-2xl font-bold">{formatCurrency(displayPrice)}</span>
+            <span className="text-2xl font-bold">{formatCurrency(effectivePrice)}</span>
           )}
         </div>
-      </div>
 
-      <div className="flex flex-col items-start gap-2">
-        <span className="flex items-center gap-1 text-sm leading-snug font-medium tracking-wide text-amber-600">
-          Califica este producto:
-        </span>
-        <div className="flex items-center gap-3">
-          <ProductRating
-            value={userRating}
-            onChange={(rating) => {
-              toast.promise(simulateApi(rating), {
-                loading: 'Enviando calificación...',
-                success: `Gracias, calificaste con ${rating} estrella${rating !== 1 ? 's' : ''}`,
-                error: 'Error al enviar calificación',
-              });
-              setUserRating(rating);
-            }}
-            size="md"
-          />
-          {userRating > 0 && <span className="text-brand-secondary text-xs">({userRating}/5)</span>}
-        </div>
+        {product.rating.count > 0 && (
+          <div className="flex items-center gap-1.5 border-l border-gray-200 pl-3">
+            <Stars rating={product.rating.avg} />
+            <span className="text-xs text-gray-500">({product.rating.count})</span>
+          </div>
+        )}
       </div>
 
       {hasVariants && (
         <VariantSelector
-          groups={product.variantGroups!}
-          selectedOptions={selectedOptions}
+          groups={groups}
+          variants={product.variants ?? []}
+          selectedOptions={selectedValues}
           onOptionChange={handleOptionChange}
         />
       )}
@@ -163,15 +143,20 @@ export function ProductInfo({ product }: ProductInfoProps) {
       <div className="flex flex-col gap-2">
         <label className="text-brand-primary text-sm font-medium tracking-wide">Cantidad</label>
         <div className="flex items-center gap-2">
-          <QuantitySelector quantity={quantity} max={maxStock} onChange={setQuantity} />
+          <QuantitySelector
+            quantity={quantity}
+            max={Math.max(1, maxStock)}
+            onChange={setQuantity}
+          />
           <Button
             size="lg"
             disabled={isOutOfStock}
+            onClick={handleAddToCart}
             className="h-10 flex-1 cursor-pointer rounded-xs text-sm font-semibold tracking-widest uppercase"
           >
             {isOutOfStock ? 'Agotado' : 'Agregar a Cesta'}
           </Button>
-          <FavoriteButton product={product} variantId={variantId} />
+          <FavoriteButton product={product} variantId={selectedVariant?.id ?? product.id} />
         </div>
         {!isOutOfStock && maxStock <= 5 && (
           <p className="flex items-center gap-1.5 text-xs font-medium text-orange-600">
@@ -181,12 +166,28 @@ export function ProductInfo({ product }: ProductInfoProps) {
         )}
       </div>
 
-      {product.tagline && (
-        <p className="text-brand-secondary text-sm leading-relaxed">{product.tagline}</p>
+      <div className="flex flex-col items-start gap-2">
+        <span className="flex items-center gap-1 text-sm leading-snug font-medium tracking-wide text-amber-600">
+          Califica este producto:
+        </span>
+        <div className="flex items-center gap-3">
+          <ProductRating value={userRating} onChange={setUserRating} size="md" />
+          {userRating > 0 && <span className="text-brand-secondary text-xs">({userRating}/5)</span>}
+        </div>
+      </div>
+
+      {product.descriptions?.short && (
+        <p className="text-brand-secondary text-sm leading-relaxed">{product.descriptions.short}</p>
       )}
 
-      {product.tags && <ProductAttributeBadges tags={product.tags} />}
-      <ProductInformationAccordion sections={accordionSections} />
+      {product.country_of_origin && (
+        <p className="text-xs text-gray-500">
+          <span className="font-medium text-gray-700">Origen:</span> {product.country_of_origin}
+        </p>
+      )}
+
+      <ProductAttributeBadges attributions={product.attributions ?? []} />
+      <ProductInformationAccordion sections={buildInformationSections(product)} />
 
       <ProductShare title={product.name} />
     </div>

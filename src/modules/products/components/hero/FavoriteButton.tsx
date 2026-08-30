@@ -1,13 +1,14 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { DEFAULT_PRODUCT_IMAGE } from '@/modules/products/constants';
 import { useFavorites } from '@/modules/products/hooks/useFavorites';
-import type { ProductDetail } from '@/modules/products/types/productDetail';
+import type { StorefrontProductDetail } from '@/modules/products/types/storefront';
 import { Heart } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface FavoriteButtonProps {
-  product: ProductDetail;
+  product: StorefrontProductDetail;
   variantId: string;
   className?: string;
 }
@@ -15,6 +16,10 @@ interface FavoriteButtonProps {
 export function FavoriteButton({ product, variantId, className }: FavoriteButtonProps) {
   const { toggleAsync, isFavorite } = useFavorites();
   const active = isFavorite(product.id, variantId);
+  const primaryVariant =
+    product.variants?.find((variant) => variant.id === variantId) ??
+    product.variants?.find((variant) => variant.is_primary) ??
+    product.variants?.[0];
 
   return (
     <button
@@ -26,8 +31,10 @@ export function FavoriteButton({ product, variantId, className }: FavoriteButton
           variantId,
           slug: product.slug,
           name: product.name,
-          price: product.price,
-          image: product.images[0]?.url ?? '',
+          price: primaryVariant?.effective_price ?? primaryVariant?.price ?? 0,
+          image:
+            primaryVariant?.media?.find((media) => media.type === 'IMAGE')?.url ??
+            DEFAULT_PRODUCT_IMAGE,
         };
 
         toast.promise(toggleAsync(item), {

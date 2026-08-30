@@ -2,10 +2,14 @@
 
 import { cn, formatCurrency } from '@/lib/utils';
 import type { VariantGroup } from '@/modules/products/types/productDetail';
+import type { StorefrontVariant } from '@/modules/products/types/storefront';
+import { isOptionAvailable } from '@/modules/products/utils/storefront-product-detail';
+import { AppImage } from '@/shared/components/custom-ui/app-image';
 import { Check } from 'lucide-react';
 
 interface VariantSelectorProps {
   groups: VariantGroup[];
+  variants: StorefrontVariant[];
   selectedOptions: Record<string, string>;
   onOptionChange: (groupId: string, optionId: string) => void;
 }
@@ -88,7 +92,19 @@ function IconGridGroup({
               </span>
             )}
             {option.iconUrl ? (
-              <img src={option.iconUrl} alt="" className="h-8 w-8 object-contain" />
+              <AppImage
+                src={option.iconUrl}
+                alt=""
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain"
+                skeleton={false}
+              />
+            ) : option.colorHex ? (
+              <span
+                className="block h-8 w-8 rounded-full border border-black/10"
+                style={{ backgroundColor: option.colorHex }}
+              />
             ) : (
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-xs font-bold text-gray-400">
                 {option.label.charAt(0)}
@@ -165,7 +181,12 @@ const groupRenderers: Record<
   'vertical-list': VerticalListGroup,
 };
 
-export function VariantSelector({ groups, selectedOptions, onOptionChange }: VariantSelectorProps) {
+export function VariantSelector({
+  groups,
+  variants,
+  selectedOptions,
+  onOptionChange,
+}: VariantSelectorProps) {
   if (!groups || groups.length === 0) return null;
 
   return (
@@ -174,13 +195,23 @@ export function VariantSelector({ groups, selectedOptions, onOptionChange }: Var
         const Renderer = groupRenderers[group.type];
         if (!Renderer) return null;
 
+        // Disponibilidad reactiva: una opción se deshabilita si no hay una
+        // variante en stock compatible con las opciones ya seleccionadas.
+        const reactiveGroup: VariantGroup = {
+          ...group,
+          options: group.options.map((option) => ({
+            ...option,
+            isAvailable: isOptionAvailable(variants, selectedOptions, group.id, option.id),
+          })),
+        };
+
         return (
           <div key={group.id} className="flex flex-col gap-1.5">
             <label className="text-brand-primary text-sm font-medium tracking-wide">
               {group.name}
             </label>
             <Renderer
-              group={group}
+              group={reactiveGroup}
               selectedId={selectedOptions[group.id] ?? ''}
               onSelect={(optionId) => onOptionChange(group.id, optionId)}
             />
