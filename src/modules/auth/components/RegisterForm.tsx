@@ -1,12 +1,12 @@
 'use client';
 
 import { Eye, EyeOff, Loader2, Lock } from 'lucide-react';
-import { useState } from 'react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Button } from '@/shared/components/shadcn-ui/button';
-
 import {
   Field,
   FieldError,
@@ -14,34 +14,28 @@ import {
   FieldSeparator,
   FieldSet,
 } from '@/shared/components/shadcn-ui/field';
-
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
 } from '@/shared/components/shadcn-ui/input-group';
-
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+import { useGoogleIdentity } from '@/lib/hooks/useGoogleIdentity';
+import { authService } from '../services/auth.service';
+import { useAuthStore } from '../store/useAuthStore';
 
 export const registerSchema = z
   .object({
     name: z.string().min(1, 'El nombre es obligatorio'),
-
     lastname: z.string().min(1, 'El apellido es obligatorio'),
-
     email: z
       .string()
       .min(1, 'El email es obligatorio')
-      .pipe(
-        z.email({
-          error: 'Ingrese un email válido',
-        }),
-      ),
-
+      .pipe(z.email({ error: 'Ingrese un email válido' })),
     password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
-
     password_confirmation: z.string().min(1, 'Repita la contraseña'),
   })
   .refine((data) => data.password === data.password_confirmation, {
@@ -54,8 +48,35 @@ export type RegisterSchemaType = z.infer<typeof registerSchema>;
 export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
+  const { setUser, isAuthenticated } = useAuthStore();
+
+  const { renderGoogleButton, scriptLoaded } = useGoogleIdentity({
+    isAuthenticated,
+    disabled: isLoading,
+    onSuccess: async (token, picture) => {
+      setIsLoading(true);
+      setError(null);
+
+      const result = await authService.loginWithGoogle({ token });
+
+      if (!result.success) {
+        setError(result.message);
+        setIsLoading(false);
+        return;
+      }
+
+      setUser(result.data!.user, picture);
+      router.replace('/');
+    },
+  });
+
+  useEffect(() => {
+    renderGoogleButton('google-btn-register');
+  }, [renderGoogleButton, scriptLoaded]);
 
   const form = useForm<RegisterSchemaType>({
     resolver: standardSchemaResolver(registerSchema),
@@ -69,32 +90,39 @@ export function RegisterForm() {
     },
   });
 
-  const onSubmit = (data: RegisterSchemaType) => {
+  const onSubmit = async (values: RegisterSchemaType) => {
     setIsLoading(true);
+    setError(null);
 
-    console.log(data);
+    const result = await authService.register({
+      name: `${values.name} ${values.lastname}`,
+      email: values.email,
+      password: values.password,
+      password_confirmation: values.password_confirmation,
+    });
 
-    setTimeout(() => {
+    if (!result.success) {
+      setError(result.message);
       setIsLoading(false);
-      alert('Registro exitoso');
-    }, 1500);
+      return;
+    }
+
+    setUser(result.data!.user);
+    router.replace('/');
   };
 
   return (
     <div>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         <FieldSet className="mb-8">
-          {/* Nombre */}
           <Controller
             name="name"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor={field.name} className="text-brand-primary block">
-                  Nombre completo
-                  <span className="text-destructive">*</span>
+                  Nombre completo <span className="text-destructive">*</span>
                 </FieldLabel>
-
                 <InputGroup className="h-12 rounded-xs">
                   <InputGroupInput
                     {...field}
@@ -104,23 +132,19 @@ export function RegisterForm() {
                     aria-invalid={fieldState.invalid}
                   />
                 </InputGroup>
-
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
 
-          {/* Apellido */}
           <Controller
             name="lastname"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid} className="mt-4">
                 <FieldLabel htmlFor={field.name} className="text-brand-primary block">
-                  Apellido completo
-                  <span className="text-destructive">*</span>
+                  Apellido completo <span className="text-destructive">*</span>
                 </FieldLabel>
-
                 <InputGroup className="h-12 rounded-xs">
                   <InputGroupInput
                     {...field}
@@ -130,23 +154,19 @@ export function RegisterForm() {
                     aria-invalid={fieldState.invalid}
                   />
                 </InputGroup>
-
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
 
-          {/* Email */}
           <Controller
             name="email"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid} className="mt-4">
                 <FieldLabel htmlFor={field.name} className="text-brand-primary block">
-                  Email
-                  <span className="text-destructive">*</span>
+                  Email <span className="text-destructive">*</span>
                 </FieldLabel>
-
                 <InputGroup className="h-12 rounded-xs">
                   <InputGroupInput
                     {...field}
@@ -158,23 +178,19 @@ export function RegisterForm() {
                     aria-invalid={fieldState.invalid}
                   />
                 </InputGroup>
-
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
 
-          {/* Password */}
           <Controller
             name="password"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid} className="mt-4">
                 <FieldLabel htmlFor={field.name} className="text-brand-primary block">
-                  Contraseña
-                  <span className="text-destructive">*</span>
+                  Contraseña <span className="text-destructive">*</span>
                 </FieldLabel>
-
                 <InputGroup className="h-12 rounded-xs">
                   <InputGroupInput
                     {...field}
@@ -183,7 +199,6 @@ export function RegisterForm() {
                     placeholder="Contraseña"
                     disabled={isLoading}
                   />
-
                   <InputGroupAddon align="inline-end">
                     <InputGroupButton
                       type="button"
@@ -196,23 +211,19 @@ export function RegisterForm() {
                     </InputGroupButton>
                   </InputGroupAddon>
                 </InputGroup>
-
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
 
-          {/* Confirmar Password */}
           <Controller
             name="password_confirmation"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid} className="mt-4">
                 <FieldLabel htmlFor={field.name} className="text-brand-primary block">
-                  Repetir Contraseña
-                  <span className="text-destructive">*</span>
+                  Repetir Contraseña <span className="text-destructive">*</span>
                 </FieldLabel>
-
                 <InputGroup className="h-12 rounded-xs">
                   <InputGroupInput
                     {...field}
@@ -221,7 +232,6 @@ export function RegisterForm() {
                     placeholder="Repetir Contraseña"
                     disabled={isLoading}
                   />
-
                   <InputGroupAddon align="inline-end">
                     <InputGroupButton
                       type="button"
@@ -238,12 +248,13 @@ export function RegisterForm() {
                     </InputGroupButton>
                   </InputGroupAddon>
                 </InputGroup>
-
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
         </FieldSet>
+
+        {error && <p className="text-destructive text-sm">{error}</p>}
 
         <Button
           type="submit"
@@ -259,34 +270,10 @@ export function RegisterForm() {
             'Registrarme'
           )}
         </Button>
-        <FieldSeparator className="my-8"> ¿Ya tienes una cuenta?</FieldSeparator>
 
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => alert('Iniciar sesión con Google (Maqueta)')}
-          className="text-brand-primary hover:text-brand-primary h-13 w-full cursor-pointer justify-center gap-3 rounded-sm border text-base font-medium"
-        >
-          <svg className="h-5 w-5" viewBox="0 0 24 24">
-            <path
-              fill="#4285F4"
-              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-            />
-            <path
-              fill="#34A853"
-              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-            />
-            <path
-              fill="#FBBC05"
-              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-            />
-            <path
-              fill="#EA4335"
-              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-            />
-          </svg>
-          Continuar con Google
-        </Button>
+        <FieldSeparator className="my-8">¿Ya tienes una cuenta?</FieldSeparator>
+
+        <div id="google-btn-register" className="flex w-full justify-center" />
 
         <Button
           type="button"
