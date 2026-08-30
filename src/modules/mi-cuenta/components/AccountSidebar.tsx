@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils/shadcn-cn';
+import { authService } from '@/modules/auth/services/auth.service';
+import { useAuthStore } from '@/modules/auth/store/useAuthStore';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,6 +36,13 @@ const SUPPORT_LINKS = [
 export function AccountSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { clearUser } = useAuthStore();
+
+  const handleLogout = async () => {
+    await authService.logout();
+    clearUser();
+    router.replace('/login');
+  };
 
   return (
     <aside className="w-full space-y-6">
@@ -84,7 +93,7 @@ export function AccountSidebar() {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction variant="destructive" onClick={() => router.push('/login')}>
+                <AlertDialogAction variant="destructive" onClick={handleLogout}>
                   Cerrar sesión
                 </AlertDialogAction>
               </AlertDialogFooter>

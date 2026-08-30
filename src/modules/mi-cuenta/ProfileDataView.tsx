@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useAuthStore } from '@/modules/auth/store/useAuthStore';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Button } from '@/shared/components/shadcn-ui/button';
@@ -15,7 +16,6 @@ import {
 } from '@/shared/components/shadcn-ui/select';
 
 import { PageHeader } from './components/PageHeader';
-import { ACCOUNT_MOCK } from './mocks/account.mock';
 import type { PersonalDataFormData } from './types/profile';
 
 const DOCUMENT_TYPES = [
@@ -25,10 +25,37 @@ const DOCUMENT_TYPES = [
 ];
 
 export function ProfileDataView() {
-  const { control, handleSubmit } = useForm<PersonalDataFormData>({
-    defaultValues: ACCOUNT_MOCK.personalData,
+  const { user } = useAuthStore();
+
+  const { control, handleSubmit, reset } = useForm<PersonalDataFormData>({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      documentType: '',
+      documentNumber: '',
+    },
     mode: 'onSubmit',
   });
+
+  // 👇 Sincroniza los valores del formulario cuando el usuario rehidrata desdel store
+  useEffect(() => {
+    if (user) {
+      const nameParts = user.name?.trim().split(' ') ?? [];
+      const firstName = nameParts[0] ?? '';
+      const lastName = nameParts.slice(1).join(' ') ?? '';
+
+      reset({
+        firstName,
+        lastName,
+        email: user.email ?? '',
+        phone: '',
+        documentType: '',
+        documentNumber: '',
+      });
+    }
+  }, [user, reset]);
 
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
