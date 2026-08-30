@@ -15,12 +15,12 @@ export default function MainHeader() {
       size="container"
       className="flex h-20 items-center justify-between gap-4 lg:gap-8"
     >
-      <div className="flex flex-1 items-center gap-2 lg:max-w-xs">
+      <div className="flex items-center gap-2 lg:max-w-xs">
         <SheetTrigger asChild>
           <Button
             variant="ghost"
             size="icon"
-            className="text-brand-white lg:hidden"
+            className="text-brand-white hover:bg-transparent hover:text-white lg:hidden"
             aria-label="Abrir menú de navegación"
           >
             <MenuIcon strokeWidth={1.5} className="size-6" />

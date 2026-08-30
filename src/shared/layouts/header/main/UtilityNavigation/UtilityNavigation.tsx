@@ -11,9 +11,9 @@ export function UtilityNavigation() {
       as="nav"
       size="full"
       aria-label="Navegación de utilidades"
-      className="hidden w-full max-w-fit lg:block"
+      className="w-full max-w-fit"
     >
-      <ul className="flex w-full items-center gap-8">
+      <ul className="flex w-full items-center gap-4 sm:gap-8">
         {utilityNavigationItems.map((item) => {
           const Icon = item.icon;
           const isCart = item.href === '/carrito';
@@ -26,7 +26,7 @@ export function UtilityNavigation() {
                 activeClassName="text-brand-white"
                 includeSubpath={item.includeSubpath}
               >
-                <span>{item.label}</span>
+                <span className="hidden lg:block">{item.label}</span>
                 <div className="relative">
                   <Icon strokeWidth={1.5} className="size-4.5" />
                   {isCart && cartCount > 0 && (

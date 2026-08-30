@@ -8,7 +8,7 @@ interface LogoProps {
 
 export function Logo({ src, alt }: LogoProps) {
   return (
-    <Link href="/" aria-label="Inicio" className="inline-flex">
+    <Link href="/" aria-label="Inicio" className="inline-flex max-w-25 md:max-w-full">
       <AppImage
         src={src}
         alt={alt}
