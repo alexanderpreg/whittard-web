@@ -1,4 +1,13 @@
+import { buildSeoMetadata } from '@/lib/seo';
 import { FaqsView } from '@/modules/legals/faq/FaqView';
+
+export const metadata = buildSeoMetadata({
+  defaults: {
+    title: 'Preguntas Frecuentes',
+    description:
+      'Resolvemos tus dudas sobre compras, métodos de pago, envíos a provincia y conservación de productos Whittard.',
+  },
+});
 
 const MOCK_FAQ_DATA = {
   content: {

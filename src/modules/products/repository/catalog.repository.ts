@@ -1,17 +1,17 @@
 import { buildQueryString } from '@/lib/utils';
 
 import type {
-  StorefrontCatalogFilters,
-  StorefrontCatalogResponse,
-  StorefrontCategoryPath,
-  StorefrontProductDetail,
-  StorefrontSitemap,
-} from '../types/storefront';
+  CatalogFilters,
+  CatalogResponse,
+  CategoryPath,
+  ProductDetail,
+  Sitemap,
+} from '../types/catalog';
 import type {
   CatalogHttpClient,
   CatalogQueryParams,
+  CatalogRepository,
   CatalogRequestOptions,
-  StorefrontCatalogRepository,
 } from './types';
 
 const STORE_V1_BASE = 'api/v1';
@@ -45,31 +45,26 @@ function withQuery(endpoint: string, params?: CatalogQueryParams): string {
   return query ? `${endpoint}?${query}` : endpoint;
 }
 
-export class RemoteStorefrontCatalogRepository implements StorefrontCatalogRepository {
+export class RemoteCatalogRepository implements CatalogRepository {
   constructor(private readonly http: CatalogHttpClient) {}
 
   getProducts(
     params?: CatalogQueryParams,
     options?: CatalogRequestOptions,
-  ): Promise<StorefrontCatalogResponse> {
+  ): Promise<CatalogResponse> {
     const endpoint = withQuery(`${STORE_V1_BASE}/products`, params);
+    return this.http.get<CatalogResponse>(endpoint, options).then((response) => response.data);
+  }
+
+  getFilters(options?: CatalogRequestOptions): Promise<CatalogFilters> {
     return this.http
-      .get<StorefrontCatalogResponse>(endpoint, options)
+      .get<CatalogFilters>(`${STORE_V1_BASE}/catalog/filters`, options)
       .then((response) => response.data);
   }
 
-  getFilters(options?: CatalogRequestOptions): Promise<StorefrontCatalogFilters> {
+  getCategoryByPath(path: string, options?: CatalogRequestOptions): Promise<CategoryPath> {
     return this.http
-      .get<StorefrontCatalogFilters>(`${STORE_V1_BASE}/catalog/filters`, options)
-      .then((response) => response.data);
-  }
-
-  getCategoryByPath(
-    path: string,
-    options?: CatalogRequestOptions,
-  ): Promise<StorefrontCategoryPath> {
-    return this.http
-      .get<StorefrontCategoryPath>(`${STORE_V1_BASE}/catalog/categories/by-path/${path}`, options)
+      .get<CategoryPath>(`${STORE_V1_BASE}/catalog/categories/by-path/${path}`, options)
       .then((response) => response.data);
   }
 
@@ -77,17 +72,15 @@ export class RemoteStorefrontCatalogRepository implements StorefrontCatalogRepos
     slug: string,
     variant?: string,
     options?: CatalogRequestOptions,
-  ): Promise<StorefrontProductDetail> {
+  ): Promise<ProductDetail> {
     const query = variant ? buildQueryString({ variant }) : '';
     const endpoint = `${STORE_V1_BASE}/products/${slug}${query ? `?${query}` : ''}`;
-    return this.http
-      .get<StorefrontProductDetail>(endpoint, options)
-      .then((response) => response.data);
+    return this.http.get<ProductDetail>(endpoint, options).then((response) => response.data);
   }
 
-  getSitemap(options?: CatalogRequestOptions): Promise<StorefrontSitemap> {
+  getSitemap(options?: CatalogRequestOptions): Promise<Sitemap> {
     return this.http
-      .get<StorefrontSitemap>(`${STORE_V1_BASE}/sitemap`, options)
+      .get<Sitemap>(`${STORE_V1_BASE}/sitemap`, options)
       .then((response) => response.data);
   }
 }

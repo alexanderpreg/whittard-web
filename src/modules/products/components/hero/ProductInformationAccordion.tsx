@@ -1,4 +1,5 @@
 import type { ProductInformationSection } from '@/modules/products/types/productDetail';
+import { RichText } from '@/shared/components/custom-ui/rich-text';
 import {
   Accordion,
   AccordionContent,
@@ -25,10 +26,7 @@ export function ProductInformationAccordion({ sections }: ProductInformationAcco
             {section.title}
           </AccordionTrigger>
           <AccordionContent>
-            <div
-              className="text-brand-secondary text-base"
-              dangerouslySetInnerHTML={{ __html: section.content }}
-            />
+            <RichText html={section.content} />
           </AccordionContent>
         </AccordionItem>
       ))}

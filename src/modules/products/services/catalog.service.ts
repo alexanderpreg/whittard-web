@@ -1,19 +1,19 @@
 import { ApiServer } from '@/lib/http/server/api-server';
 
-import { RemoteStorefrontCatalogRepository } from '../repository/storefront-catalog.repository';
+import { RemoteCatalogRepository } from '../repository/catalog.repository';
 import type {
   CatalogHttpClient,
   CatalogQueryParams,
+  CatalogRepository,
   CatalogRequestOptions,
-  StorefrontCatalogRepository,
 } from '../repository/types';
 import type {
-  StorefrontCatalogFilters,
-  StorefrontCatalogResponse,
-  StorefrontCategoryPath,
-  StorefrontProductDetail,
-  StorefrontSitemap,
-} from '../types/storefront';
+  CatalogFilters,
+  CatalogResponse,
+  CategoryPath,
+  ProductDetail,
+  Sitemap,
+} from '../types/catalog';
 
 /**
  * Endpoints públicos de solo lectura: se cachean con ISR (revalidate) y se
@@ -27,29 +27,29 @@ const PUBLIC_OPTIONS: CatalogRequestOptions = {
   next: { revalidate: STORE_PUBLIC_REVALIDATE },
 };
 
-const serverRepository: StorefrontCatalogRepository = new RemoteStorefrontCatalogRepository(
+const serverRepository: CatalogRepository = new RemoteCatalogRepository(
   ApiServer as unknown as CatalogHttpClient,
 );
 
 /** Servicio para Server Components (SSR/ISR). */
-export const StorefrontCatalogService = {
-  getProducts(params?: CatalogQueryParams): Promise<StorefrontCatalogResponse> {
+export const CatalogService = {
+  getProducts(params?: CatalogQueryParams): Promise<CatalogResponse> {
     return serverRepository.getProducts(params, PUBLIC_OPTIONS);
   },
 
-  getFilters(): Promise<StorefrontCatalogFilters> {
+  getFilters(): Promise<CatalogFilters> {
     return serverRepository.getFilters(PUBLIC_OPTIONS);
   },
 
-  getCategoryByPath(path: string): Promise<StorefrontCategoryPath> {
+  getCategoryByPath(path: string): Promise<CategoryPath> {
     return serverRepository.getCategoryByPath(path, PUBLIC_OPTIONS);
   },
 
-  getProductBySlug(slug: string, variant?: string): Promise<StorefrontProductDetail> {
+  getProductBySlug(slug: string, variant?: string): Promise<ProductDetail> {
     return serverRepository.getProductBySlug(slug, variant, PUBLIC_OPTIONS);
   },
 
-  getSitemap(): Promise<StorefrontSitemap> {
+  getSitemap(): Promise<Sitemap> {
     return serverRepository.getSitemap({ auth: false });
   },
 };

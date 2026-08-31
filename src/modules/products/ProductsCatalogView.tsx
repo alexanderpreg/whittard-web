@@ -7,19 +7,15 @@ import { toast } from 'sonner';
 import { useIntersectionObserver } from '@/lib/hooks/useIntersectionObserver';
 import { formatCurrency } from '@/lib/utils';
 import { ProductCard } from '@/modules/products/components/ProductCard';
-import { toProductCardDataList } from '@/modules/products/mappers/storefront-product-card.mapper';
+import { toProductCardDataList } from '@/modules/products/mappers/product-card.mapper';
 import type { CatalogQueryParams } from '@/modules/products/repository/types';
-import { getClientStorefrontCatalogRepository } from '@/modules/products/services/client-storefront-catalog';
+import { getClientCatalogRepository } from '@/modules/products/services/client-catalog';
+import type { CatalogFilters, CategoryPath, Pagination } from '@/modules/products/types/catalog';
 import type { ProductCardData } from '@/modules/products/types/productCard';
-import type {
-  StorefrontCatalogFilters,
-  StorefrontCategoryPath,
-  StorefrontPagination,
-} from '@/modules/products/types/storefront';
 import {
   buildCatalogQueryString,
   parseCatalogSearchParams,
-} from '@/modules/products/utils/storefront-catalog-query';
+} from '@/modules/products/utils/catalog-query';
 import { Container } from '@/shared/components/custom-ui/Container';
 import { PageBreadcrumb } from '@/shared/components/custom-ui/PageBreadcrumb';
 import { PageHeroBanner } from '@/shared/components/custom-ui/PageHeroBanner';
@@ -36,7 +32,7 @@ interface ActiveFilter {
 function resolveFilterLabel(
   key: ActiveFilter['key'],
   value: string,
-  filters: StorefrontCatalogFilters,
+  filters: CatalogFilters,
 ): string {
   switch (key) {
     case 'flavorIds':
@@ -56,10 +52,10 @@ function resolveFilterLabel(
 
 interface ProductsCatalogViewProps {
   slug: string[];
-  category: StorefrontCategoryPath | null;
+  category: CategoryPath | null;
   products: ProductCardData[];
-  pagination: StorefrontPagination;
-  filters: StorefrontCatalogFilters;
+  pagination: Pagination;
+  filters: CatalogFilters;
 }
 
 export function ProductsCatalogView({
@@ -171,7 +167,7 @@ export function ProductsCatalogView({
     setIsLoadingMore(true);
     setHasError(false);
     try {
-      const repository = getClientStorefrontCatalogRepository();
+      const repository = getClientCatalogRepository();
       const response = await repository.getProducts({
         ...currentParams,
         category: categoryPath || undefined,

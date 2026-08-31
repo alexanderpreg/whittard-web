@@ -1,5 +1,7 @@
+import { buildSeoMetadata } from '@/lib/seo';
+import { SeoJsonLd } from '@/lib/seo-json-ld';
 import { DetailProductView } from '@/modules/products/DetailProductView';
-import { StorefrontCatalogService } from '@/modules/products/services/storefront-catalog.service';
+import { CatalogService } from '@/modules/products/services/catalog.service';
 import { isNotFoundError } from '@/modules/products/utils/errors';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -9,38 +11,20 @@ interface PageProps {
   searchParams: Promise<{ variant?: string }>;
 }
 
-function buildMetadata(
-  product: Awaited<ReturnType<typeof StorefrontCatalogService.getProductBySlug>>,
-): Metadata {
-  const seo = product.seo;
-  if (!seo) {
-    return {
-      title: `${product.name} | Whittard`,
-      description: product.descriptions?.short ?? undefined,
-    };
-  }
-
-  return {
-    title: seo.meta_title ?? `${product.name} | Whittard`,
-    description: seo.meta_description ?? product.descriptions?.short ?? undefined,
-    keywords: seo.keywords ?? undefined,
-    alternates: seo.canonical_url ? { canonical: seo.canonical_url } : undefined,
-    robots: seo.noindex ? { index: false, follow: false } : { index: true, follow: true },
-    openGraph: {
-      title: seo.og_title ?? seo.meta_title ?? product.name,
-      description:
-        seo.og_description ?? seo.meta_description ?? product.descriptions?.short ?? undefined,
-      images: seo.og_image ? [{ url: seo.og_image }] : undefined,
-    },
-  };
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
 
   try {
-    const product = await StorefrontCatalogService.getProductBySlug(slug);
-    return buildMetadata(product);
+    const product = await CatalogService.getProductBySlug(slug);
+
+    return buildSeoMetadata({
+      seo: product.seo,
+      defaults: {
+        title: product.name,
+        description: product.descriptions?.short ?? undefined,
+        image: product.variants?.[0]?.media?.[0]?.url ?? undefined,
+      },
+    });
   } catch (error) {
     if (isNotFoundError(error)) return {};
     throw error;
@@ -49,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export async function generateStaticParams() {
   try {
-    const sitemap = await StorefrontCatalogService.getSitemap();
+    const sitemap = await CatalogService.getSitemap();
     return sitemap.products.map((product) => ({ slug: product.slug }));
   } catch {
     return [];
@@ -62,23 +46,16 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
 
   let product;
   try {
-    product = await StorefrontCatalogService.getProductBySlug(slug, variant);
+    product = await CatalogService.getProductBySlug(slug, variant);
   } catch (error) {
     if (isNotFoundError(error)) notFound();
     throw error;
   }
 
-  const jsonLd = product.seo?.structured_data;
-
   return (
     <>
       <DetailProductView product={product} />
-      {jsonLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      )}
+      <SeoJsonLd data={product.seo?.structured_data} />
     </>
   );
 }

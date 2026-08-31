@@ -1,9 +1,9 @@
 import type { ApiResponse } from '@/lib/types';
 
 /**
- * Tipos del catálogo público del backend (storefront).
+ * Tipos del catálogo público del backend.
  *
- * Contrato real de los 5 endpoints públicos de `app/Modules/Product/Resources/StoreFront`:
+ * Contrato real de los 5 endpoints públicos del módulo Product:
  *   - GET /api/v1/products
  *   - GET /api/v1/catalog/filters
  *   - GET /api/v1/catalog/categories/by-path/{slug...}
@@ -13,14 +13,14 @@ import type { ApiResponse } from '@/lib/types';
  * Ver `docs/specs/productos/storefront-product-catalog-web-integration.md`.
  */
 
-export interface StorefrontPagination {
+export interface Pagination {
   per_page: number;
   has_more: boolean;
   next_cursor: string | null;
   prev_cursor: string | null;
 }
 
-export interface StorefrontSeo {
+export interface Seo {
   meta_title: string | null;
   meta_description: string | null;
   keywords: string[] | null;
@@ -33,14 +33,14 @@ export interface StorefrontSeo {
   noindex: boolean;
 }
 
-export interface StorefrontCategoryRef {
+export interface CategoryRef {
   id: string;
   name: string;
   slug: string;
-  parent?: StorefrontCategoryRef | null;
+  parent?: CategoryRef | null;
 }
 
-export interface StorefrontDefaultVariant {
+export interface DefaultVariant {
   id: string;
   sku: string;
   price: number | null;
@@ -56,30 +56,30 @@ export interface StorefrontDefaultVariant {
   hover_image_url: string | null;
 }
 
-export interface StorefrontAttribution {
+export interface Attribution {
   id: string;
   name: string;
   image_url: string | null;
 }
 
-export interface StorefrontFlavor {
+export interface Flavor {
   id: string;
   name: string;
 }
 
-export interface StorefrontProductCard {
+export interface ProductCard {
   id: string;
   name: string;
   slug: string;
   brand: string | null;
-  category: StorefrontCategoryRef | null;
-  default_variant: StorefrontDefaultVariant;
+  category: CategoryRef | null;
+  default_variant: DefaultVariant;
   rating: { avg: number; count: number };
-  flavors: StorefrontFlavor[];
-  attributions: StorefrontAttribution[];
+  flavors: Flavor[];
+  attributions: Attribution[];
 }
 
-export interface StorefrontAttributeOption {
+export interface AttributeOption {
   id: string;
   value: string;
   image_url: string | null;
@@ -88,14 +88,14 @@ export interface StorefrontAttributeOption {
   products_count?: number;
 }
 
-export interface StorefrontAttribute {
+export interface Attribute {
   id: string;
   type: string;
   label: string;
-  options: StorefrontAttributeOption[];
+  options: AttributeOption[];
 }
 
-export interface StorefrontVariantMedia {
+export interface VariantMedia {
   id: string;
   type: 'IMAGE' | 'VIDEO';
   url: string | null;
@@ -103,7 +103,7 @@ export interface StorefrontVariantMedia {
   order: number;
 }
 
-export interface StorefrontVariant {
+export interface Variant {
   id: string;
   sku: string;
   order: number;
@@ -117,10 +117,10 @@ export interface StorefrontVariant {
   in_stock: boolean;
   is_primary: boolean;
   attributes: Record<string, string>;
-  media: StorefrontVariantMedia[];
+  media: VariantMedia[];
 }
 
-export interface StorefrontProductDetail extends Omit<StorefrontProductCard, 'default_variant'> {
+export interface ProductDetail extends Omit<ProductCard, 'default_variant'> {
   country_of_origin: string | null;
   descriptions: {
     short: string | null;
@@ -128,56 +128,56 @@ export interface StorefrontProductDetail extends Omit<StorefrontProductCard, 'de
     ingredients: string | null;
     specifications: string | null;
   };
-  seo: StorefrontSeo | null;
-  attributes: StorefrontAttribute[];
-  variants: StorefrontVariant[];
-  combinable_products: StorefrontProductCard[];
-  similar_products: StorefrontProductCard[];
+  seo: Seo | null;
+  attributes: Attribute[];
+  variants: Variant[];
+  combinable_products: ProductCard[];
+  similar_products: ProductCard[];
 }
 
-export interface StorefrontFilterCategory {
+export interface FilterCategory {
   id: string;
   name: string;
   slug: string;
   products_count: number;
-  children?: StorefrontFilterCategory[];
+  children?: FilterCategory[];
 }
 
-export interface StorefrontFilterOption {
+export interface FilterOption {
   id: string;
   name: string;
   products_count: number;
 }
 
-export interface StorefrontCatalogFilters {
-  categories: StorefrontFilterCategory[];
-  flavors: StorefrontFilterOption[];
-  attributions: (StorefrontAttribution & { products_count: number })[];
-  attributes: StorefrontAttribute[];
+export interface CatalogFilters {
+  categories: FilterCategory[];
+  flavors: FilterOption[];
+  attributions: (Attribution & { products_count: number })[];
+  attributes: Attribute[];
   price: { min: number; max: number };
   total_products: number;
 }
 
-export interface StorefrontCategoryPath {
+export interface CategoryPath {
   category: { id: string; name: string; slug: string; products_count: number };
   breadcrumb: { id: string | null; name: string; slug: string }[];
   children: { id: string; name: string; slug: string; products_count: number }[];
   parent: { id: string; name: string; slug: string } | null;
-  seo: StorefrontSeo | null;
+  seo: Seo | null;
 }
 
-export interface StorefrontCatalogResponse {
-  items: StorefrontProductCard[];
-  pagination: StorefrontPagination;
+export interface CatalogResponse {
+  items: ProductCard[];
+  pagination: Pagination;
 }
 
-export interface StorefrontSitemap {
+export interface Sitemap {
   categories: { slug: string }[];
   products: { slug: string; updated_at: string }[];
 }
 
-export type StorefrontCatalogResponseEnvelope = ApiResponse<StorefrontCatalogResponse>;
-export type StorefrontFiltersEnvelope = ApiResponse<StorefrontCatalogFilters>;
-export type StorefrontCategoryPathEnvelope = ApiResponse<StorefrontCategoryPath>;
-export type StorefrontProductDetailEnvelope = ApiResponse<StorefrontProductDetail>;
-export type StorefrontSitemapEnvelope = ApiResponse<StorefrontSitemap>;
+export type CatalogResponseEnvelope = ApiResponse<CatalogResponse>;
+export type FiltersEnvelope = ApiResponse<CatalogFilters>;
+export type CategoryPathEnvelope = ApiResponse<CategoryPath>;
+export type ProductDetailEnvelope = ApiResponse<ProductDetail>;
+export type SitemapEnvelope = ApiResponse<Sitemap>;

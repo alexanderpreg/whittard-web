@@ -1,13 +1,13 @@
 import type { ApiResponse } from '@/lib/types';
 
 import type {
-  StorefrontCatalogFilters,
-  StorefrontCatalogResponse,
-  StorefrontCategoryPath,
-  StorefrontProductCard,
-  StorefrontProductDetail,
-  StorefrontSitemap,
-} from '../types/storefront';
+  CatalogFilters,
+  CatalogResponse,
+  CategoryPath,
+  ProductCard,
+  ProductDetail,
+  Sitemap,
+} from '../types/catalog';
 
 export interface CatalogQueryParams {
   /** Ruta completa de categoría (ej: `tea/black-tea`). Incluye descendientes. */
@@ -46,24 +46,19 @@ export interface CatalogHttpClient {
   get<T>(endpoint: string, options?: CatalogRequestOptions): Promise<ApiResponse<T>>;
 }
 
-export interface StorefrontCatalogRepository {
+export interface CatalogRepository {
   getProducts(
     params?: CatalogQueryParams,
     options?: CatalogRequestOptions,
-  ): Promise<StorefrontCatalogResponse>;
-  getFilters(options?: CatalogRequestOptions): Promise<StorefrontCatalogFilters>;
-  getCategoryByPath(path: string, options?: CatalogRequestOptions): Promise<StorefrontCategoryPath>;
+  ): Promise<CatalogResponse>;
+  getFilters(options?: CatalogRequestOptions): Promise<CatalogFilters>;
+  getCategoryByPath(path: string, options?: CatalogRequestOptions): Promise<CategoryPath>;
   getProductBySlug(
     slug: string,
     variant?: string,
     options?: CatalogRequestOptions,
-  ): Promise<StorefrontProductDetail>;
-  getSitemap(options?: CatalogRequestOptions): Promise<StorefrontSitemap>;
+  ): Promise<ProductDetail>;
+  getSitemap(options?: CatalogRequestOptions): Promise<Sitemap>;
 }
 
-export type {
-  StorefrontCatalogFilters,
-  StorefrontCatalogResponse,
-  StorefrontProductCard,
-  StorefrontProductDetail,
-};
+export type { CatalogFilters, CatalogResponse, ProductCard, ProductDetail };

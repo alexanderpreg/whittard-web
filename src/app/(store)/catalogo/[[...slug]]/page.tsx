@@ -1,9 +1,11 @@
-import { toProductCardDataList } from '@/modules/products/mappers/storefront-product-card.mapper';
+import { buildSeoMetadata } from '@/lib/seo';
+import { SeoJsonLd } from '@/lib/seo-json-ld';
+import { toProductCardDataList } from '@/modules/products/mappers/product-card.mapper';
 import { ProductsCatalogView } from '@/modules/products/ProductsCatalogView';
-import { StorefrontCatalogService } from '@/modules/products/services/storefront-catalog.service';
-import type { StorefrontCategoryPath } from '@/modules/products/types/storefront';
+import { CatalogService } from '@/modules/products/services/catalog.service';
+import type { CategoryPath } from '@/modules/products/types/catalog';
+import { parseCatalogSearchParams } from '@/modules/products/utils/catalog-query';
 import { isNotFoundError } from '@/modules/products/utils/errors';
-import { parseCatalogSearchParams } from '@/modules/products/utils/storefront-catalog-query';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -20,24 +22,12 @@ export async function generateMetadata({
   if (slug.length === 0) return {};
 
   try {
-    const category = await StorefrontCatalogService.getCategoryByPath(slug.join('/'));
-    const seo = category.seo;
-    if (!seo) {
-      return { title: `${category.category.name} | Whittard` };
-    }
-
-    return {
-      title: seo.meta_title ?? `${category.category.name} | Whittard`,
-      description: seo.meta_description ?? undefined,
-      keywords: seo.keywords ?? undefined,
-      alternates: seo.canonical_url ? { canonical: seo.canonical_url } : undefined,
-      robots: seo.noindex ? { index: false, follow: false } : { index: true, follow: true },
-      openGraph: {
-        title: seo.og_title ?? seo.meta_title ?? category.category.name,
-        description: seo.og_description ?? seo.meta_description ?? undefined,
-        images: seo.og_image ? [{ url: seo.og_image }] : undefined,
-      },
-    };
+    const category = await CatalogService.getCategoryByPath(slug.join('/'));
+    console.log('categorias:', category);
+    return buildSeoMetadata({
+      seo: category.seo,
+      defaults: { title: category.category.name },
+    });
   } catch (error) {
     if (isNotFoundError(error)) return {};
     throw error;
@@ -49,10 +39,10 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
   const query = await searchParams;
   const slug = slugArray ?? [];
 
-  let category: StorefrontCategoryPath | null = null;
+  let category: CategoryPath | null = null;
   if (slug.length > 0) {
     try {
-      category = await StorefrontCatalogService.getCategoryByPath(slug.join('/'));
+      category = await CatalogService.getCategoryByPath(slug.join('/'));
     } catch (error) {
       if (isNotFoundError(error)) notFound();
       throw error;
@@ -64,12 +54,16 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
     ...(slug.length > 0 ? { category: slug.join('/') } : {}),
   };
 
-  const [productsResponse, filters] = await Promise.all([
-    StorefrontCatalogService.getProducts(productsParams),
-    StorefrontCatalogService.getFilters(),
+  const [productsResult, filtersResult] = await Promise.allSettled([
+    CatalogService.getProducts(productsParams),
+    CatalogService.getFilters(),
   ]);
 
-  const jsonLd = category?.seo?.structured_data;
+  if (productsResult.status === 'rejected') throw productsResult.reason;
+  if (filtersResult.status === 'rejected') throw filtersResult.reason;
+
+  const productsResponse = productsResult.value;
+  const filters = filtersResult.value;
 
   // Cada cambio de filtros cambia el query string: el `key` remonta la vista
   // (reset de estado local: página 1, inputs de precio, scroll infinito).
@@ -88,12 +82,7 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
         pagination={productsResponse.pagination}
         filters={filters}
       />
-      {jsonLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      )}
+      <SeoJsonLd data={category?.seo?.structured_data} />
     </>
   );
 }

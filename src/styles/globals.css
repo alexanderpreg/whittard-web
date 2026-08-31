@@ -2,6 +2,8 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
+@plugin '@tailwindcss/typography';
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {
@@ -158,32 +160,17 @@
   }
 }
 
-@layer utilities {
-  .rich-text-legal {
-    @apply text-brand-secondary text-justify text-sm leading-relaxed;
-
-    & h2 {
-      @apply text-brand-primary mt-6 mb-3 block text-base font-bold tracking-normal;
-    }
-
-    & p {
-      @apply mb-4 block;
-    }
-
-    & ul {
-      @apply mb-4 block list-disc space-y-1 pl-6;
-    }
-
-    & ol {
-      @apply mb-4 block list-decimal space-y-1 pl-6;
-    }
-
-    & li {
-      @apply text-brand-secondary text-sm leading-relaxed;
-    }
-
-    & strong {
-      @apply text-brand-primary font-bold;
-    }
-  }
+/* Variante de `prose` con la paleta de la marca (rich text del catálogo/editorial). */
+.prose-brand {
+  --tw-prose-body: var(--color-brand-secondary);
+  --tw-prose-headings: var(--color-brand-primary);
+  --tw-prose-links: var(--color-brand-primary);
+  --tw-prose-bold: var(--color-brand-primary);
+  --tw-prose-quotes: var(--color-brand-secondary);
+  --tw-prose-quote-borders: var(--color-brand-primary);
+  --tw-prose-bullets: var(--color-brand-primary);
+  --tw-prose-counters: var(--color-brand-primary);
+  --tw-prose-hr: var(--color-brand-200);
+  --tw-prose-th-borders: var(--color-brand-200);
+  --tw-prose-td-borders: var(--color-brand-200);
 }

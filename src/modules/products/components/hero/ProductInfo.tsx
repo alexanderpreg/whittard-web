@@ -5,12 +5,9 @@ import { useCart } from '@/modules/cart/hooks/useCart';
 import { ProductRating } from '@/modules/products/components/ProductRating';
 import { Stars } from '@/modules/products/components/Stars';
 import { DEFAULT_PRODUCT_IMAGE } from '@/modules/products/constants';
+import type { ProductDetail, Variant } from '@/modules/products/types/catalog';
 import type { VariantGroup } from '@/modules/products/types/productDetail';
-import type {
-  StorefrontProductDetail,
-  StorefrontVariant,
-} from '@/modules/products/types/storefront';
-import { buildInformationSections } from '@/modules/products/utils/storefront-product-detail';
+import { buildInformationSections } from '@/modules/products/utils/product-detail';
 import { Badge } from '@/shared/components/shadcn-ui/badge';
 import { Button } from '@/shared/components/shadcn-ui/button';
 import { AlertTriangle } from 'lucide-react';
@@ -24,10 +21,10 @@ import { QuantitySelector } from './QuantitySelector';
 import { VariantSelector } from './VariantSelector';
 
 interface ProductInfoProps {
-  product: StorefrontProductDetail;
+  product: ProductDetail;
   groups: VariantGroup[];
   selectedValues: Record<string, string>;
-  selectedVariant: StorefrontVariant | null;
+  selectedVariant: Variant | null;
   onOptionChange: (groupId: string, optionId: string) => void;
 }
 

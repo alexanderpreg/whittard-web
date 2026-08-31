@@ -1,4 +1,11 @@
+import { buildSeoMetadata } from '@/lib/seo';
 import { TermsView } from '@/modules/legals/terms/TermsView';
+export const metadata = buildSeoMetadata({
+  defaults: {
+    title: 'Términos y Condiciones',
+    description: 'Términos y condiciones de uso y compra en www.whittardperu.com.',
+  },
+});
 
 const MOCK_TERMS_CONTENT = `
   <p>Presentamos los términos y condiciones a través de los cuales podrás tener acceso y uso de la página www.whittardperu.com en el Perú. Al acceder y hacer uso de nuestros servicios, aceptas que has leído, entiendes y estás de acuerdo con las condiciones descritas en esta sección de Términos y Condiciones, así como con la legislación aplicable en la República del Perú.</p>

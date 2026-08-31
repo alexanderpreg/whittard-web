@@ -1,13 +1,13 @@
-import { toProductCardDataList } from '@/modules/products/mappers/storefront-product-card.mapper';
-import type { StorefrontProductDetail } from '@/modules/products/types/storefront';
-import { getRelatedCards } from '@/modules/products/utils/storefront-product-detail';
+import { toProductCardDataList } from '@/modules/products/mappers/product-card.mapper';
+import type { ProductDetail } from '@/modules/products/types/catalog';
+import { getRelatedCards } from '@/modules/products/utils/product-detail';
 import { Container } from '@/shared/components/custom-ui/Container';
 import { PageBreadcrumb } from '@/shared/components/custom-ui/PageBreadcrumb';
 import { ProductHero } from './components/hero/ProductHero';
 import { ProductCarousel } from './components/product-carousel/ProductCarousel';
 
 interface DetailProductViewProps {
-  product: StorefrontProductDetail;
+  product: ProductDetail;
 }
 
 export function DetailProductView({ product }: DetailProductViewProps) {

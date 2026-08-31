@@ -2,7 +2,7 @@
 
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -23,9 +23,10 @@ import {
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useGoogleIdentity } from '@/lib/hooks/useGoogleIdentity';
+import { useGoogleAuth } from '../hooks/useGoogleAuth';
 import { authService } from '../services/auth.service';
 import { useAuthStore } from '../store/useAuthStore';
+import { GoogleLoginButton } from './GoogleLoginButton';
 
 export const loginSchema = z.object({
   email: z
@@ -46,31 +47,11 @@ export function LoginForm() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect') ?? '/';
 
-  const { setUser, isAuthenticated } = useAuthStore();
+  const { setUser } = useAuthStore();
+  const { handleGoogle, loading: googleLoading, error: googleError } = useGoogleAuth(redirect);
 
-  const { renderGoogleButton, scriptLoaded } = useGoogleIdentity({
-    isAuthenticated,
-    disabled: isLoading,
-    onSuccess: async (token, picture) => {
-      setIsLoading(true);
-      setError(null);
-
-      const result = await authService.loginWithGoogle({ token });
-
-      if (!result.success) {
-        setError(result.message);
-        setIsLoading(false);
-        return;
-      }
-
-      setUser(result.data!.user, picture);
-      router.replace(redirect);
-    },
-  });
-
-  useEffect(() => {
-    renderGoogleButton('google-btn-login');
-  }, [renderGoogleButton, scriptLoaded]);
+  const isBusy = isLoading || googleLoading;
+  const shownError = error ?? googleError;
 
   const form = useForm<LoginSchemaType>({
     resolver: standardSchemaResolver(loginSchema),
@@ -112,7 +93,7 @@ export function LoginForm() {
                     id={field.name}
                     type="email"
                     placeholder="ejemplo@correo.com"
-                    disabled={isLoading}
+                    disabled={isBusy}
                     autoComplete="off"
                     aria-invalid={fieldState.invalid}
                   />
@@ -136,7 +117,7 @@ export function LoginForm() {
                     id={field.name}
                     type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••"
-                    disabled={isLoading}
+                    disabled={isBusy}
                     autoComplete="current-password"
                     aria-invalid={fieldState.invalid}
                   />
@@ -147,7 +128,7 @@ export function LoginForm() {
                       onClick={() => setShowPassword((prev) => !prev)}
                       className="bg-transparent!"
                       aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-                      disabled={isLoading}
+                      disabled={isBusy}
                     >
                       {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                     </InputGroupButton>
@@ -159,7 +140,7 @@ export function LoginForm() {
           />
         </FieldSet>
 
-        {error && <p className="text-destructive text-sm">{error}</p>}
+        {shownError && <p className="text-destructive text-sm">{shownError}</p>}
 
         <div className="flex items-center justify-start">
           <Link
@@ -173,10 +154,10 @@ export function LoginForm() {
         <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-2">
           <Button
             type="submit"
-            disabled={isLoading}
+            disabled={isBusy}
             className="bg-brand-primary hover:bg-brand-primary/90 h-13 w-full rounded-md text-base font-semibold text-white"
           >
-            {isLoading ? (
+            {isBusy ? (
               <>
                 <Loader2 className="mr-2 size-4 animate-spin" />
                 Ingresando...
@@ -198,7 +179,7 @@ export function LoginForm() {
 
         <FieldSeparator className="my-6">O inicia sesión con</FieldSeparator>
 
-        <div id="google-btn-login" className="flex w-full justify-center" />
+        <GoogleLoginButton onSuccess={handleGoogle} />
       </form>
     </div>
   );

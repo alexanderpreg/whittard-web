@@ -1,13 +1,9 @@
 import { DEFAULT_PRODUCT_IMAGE } from '../constants';
+import type { Attribute, ProductDetail, Variant } from '../types/catalog';
 import type { ProductInformationSection, ProductMedia, VariantGroup } from '../types/productDetail';
-import type {
-  StorefrontAttribute,
-  StorefrontProductDetail,
-  StorefrontVariant,
-} from '../types/storefront';
 
 /** Variante primaria (is_primary) o la primera activa. */
-export function getPrimaryVariant(product: StorefrontProductDetail): StorefrontVariant | null {
+export function getPrimaryVariant(product: ProductDetail): Variant | null {
   const variants = product.variants ?? [];
   return (
     variants.find((variant) => variant.is_primary) ??
@@ -18,10 +14,7 @@ export function getPrimaryVariant(product: StorefrontProductDetail): StorefrontV
 }
 
 /** Media de una variante mapeada al modelo de galería del frontend. */
-export function toProductMedia(
-  product: StorefrontProductDetail,
-  variant: StorefrontVariant | null,
-): ProductMedia[] {
+export function toProductMedia(product: ProductDetail, variant: Variant | null): ProductMedia[] {
   const medias = variant?.media ?? [];
   const mapped: ProductMedia[] = medias
     .filter((media) => media.url)
@@ -39,7 +32,7 @@ export function toProductMedia(
   return mapped;
 }
 
-function optionDiscountBadge(variant: StorefrontVariant): string | undefined {
+function optionDiscountBadge(variant: Variant): string | undefined {
   if (
     !variant.on_sale ||
     variant.price === null ||
@@ -55,7 +48,7 @@ function optionDiscountBadge(variant: StorefrontVariant): string | undefined {
 
 /** ¿Existe una variante en stock con ese valor de atributo compatible con la selección actual? */
 export function isOptionAvailable(
-  variants: StorefrontVariant[],
+  variants: Variant[],
   selectedValues: Record<string, string>,
   attributeType: string,
   value: string,
@@ -72,9 +65,9 @@ export function isOptionAvailable(
 
 /** Precio efectivo de la variante que coincide con la selección (o null). */
 export function findVariantForSelection(
-  variants: StorefrontVariant[],
+  variants: Variant[],
   selectedValues: Record<string, string>,
-): StorefrontVariant | null {
+): Variant | null {
   const entries = Object.entries(selectedValues).filter(([, value]) => value);
   if (entries.length === 0) return null;
 
@@ -86,8 +79,8 @@ export function findVariantForSelection(
 }
 
 function attributeGroups(
-  product: StorefrontProductDetail,
-): { attribute: StorefrontAttribute | null; type: string; label: string }[] {
+  product: ProductDetail,
+): { attribute: Attribute | null; type: string; label: string }[] {
   const { attributes, variants } = product;
   const types = [...new Set(variants.flatMap((variant) => Object.keys(variant.attributes ?? {})))];
 
@@ -102,7 +95,7 @@ function attributeGroups(
  * variantes del detalle del backend. Cada opción se mapea a una variante real
  * (precio, oferta y stock) para que la selección actualice precio/disponibilidad.
  */
-export function buildVariantGroups(product: StorefrontProductDetail): VariantGroup[] {
+export function buildVariantGroups(product: ProductDetail): VariantGroup[] {
   const { variants } = product;
   if (!variants?.length) return [];
 
@@ -148,7 +141,7 @@ export function buildVariantGroups(product: StorefrontProductDetail): VariantGro
  * orden para que cada elección respete las anteriores.
  */
 export function resolveValidSelection(
-  variants: StorefrontVariant[],
+  variants: Variant[],
   groups: VariantGroup[],
   desired: Record<string, string>,
 ): Record<string, string> {
@@ -170,9 +163,7 @@ export function resolveValidSelection(
 }
 
 /** Secciones de información (acordeón) a partir de las descripciones del backend. */
-export function buildInformationSections(
-  product: StorefrontProductDetail,
-): ProductInformationSection[] {
+export function buildInformationSections(product: ProductDetail): ProductInformationSection[] {
   const sections: ProductInformationSection[] = [];
 
   const descriptions: { id: string; title: string; content: string | null }[] = [
@@ -199,7 +190,7 @@ export function buildInformationSections(
 }
 
 /** Tarjetas relacionadas (similar + combinable) desde el detalle. */
-export function getRelatedCards(product: StorefrontProductDetail) {
+export function getRelatedCards(product: ProductDetail) {
   const related = [...(product.similar_products ?? []), ...(product.combinable_products ?? [])];
   const seen = new Set<string>();
   return related.filter((card) => {

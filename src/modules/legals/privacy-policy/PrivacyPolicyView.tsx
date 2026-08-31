@@ -1,6 +1,7 @@
 // modules/legals/privacy-policy/PrivacyPolicyView.tsx
 import { Container } from '@/shared/components/custom-ui/Container';
 import { PageHeroBanner } from '@/shared/components/custom-ui/PageHeroBanner';
+import { RichText } from '@/shared/components/custom-ui/rich-text';
 
 export interface PrivacyPolicyViewProps {
   htmlContent?: string;
@@ -12,11 +13,7 @@ export function PrivacyPolicyView({ htmlContent }: PrivacyPolicyViewProps) {
       <PageHeroBanner title="Políticas de Privacidad" imageUrl="/banner-static.png" />
 
       <Container>
-        <div
-          className="rich-text-legal"
-          // El fallback || '' asegura que React siempre reciba un string
-          dangerouslySetInnerHTML={{ __html: htmlContent || '' }}
-        />
+        <RichText html={htmlContent} className="text-justify" />
       </Container>
     </Container>
   );

@@ -1,5 +1,14 @@
 // src/app/(store)/(legals)/privacy-policy/page.tsx
+import { buildSeoMetadata } from '@/lib/seo';
 import { PrivacyPolicyView } from '@/modules/legals/privacy-policy/PrivacyPolicyView';
+
+export const metadata = buildSeoMetadata({
+  defaults: {
+    title: 'Políticas de Privacidad',
+    description:
+      'Política de privacidad de Whittard Perú conforme a la Ley N.° 29733 de Protección de Datos Personales.',
+  },
+});
 
 const MOCK_HTML_CONTENT = `
   <p>En Whittard Perú valoramos y respetamos la privacidad de nuestros clientes y usuarios. Por ello, tratamos los datos personales que nos proporcionas de manera segura, confidencial y conforme a la legislación peruana vigente en materia de protección de datos personales. La presente Política de Privacidad se encuentra regulada por la Ley N.° 29733, Ley de Protección de Datos Personales, y su Reglamento aprobado por el Decreto Supremo N.° 016-2024-JUS, así como por las demás normas aplicables en la República del Perú.</p>

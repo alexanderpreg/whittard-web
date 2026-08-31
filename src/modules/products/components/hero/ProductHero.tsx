@@ -2,18 +2,18 @@
 
 import { useMemo, useState } from 'react';
 
-import type { StorefrontProductDetail } from '@/modules/products/types/storefront';
+import type { ProductDetail } from '@/modules/products/types/catalog';
 import {
   buildVariantGroups,
   findVariantForSelection,
   resolveValidSelection,
   toProductMedia,
-} from '@/modules/products/utils/storefront-product-detail';
+} from '@/modules/products/utils/product-detail';
 import { ProductGallery } from './ProductGallery';
 import { ProductInfo } from './ProductInfo';
 
 interface ProductHeroProps {
-  product: StorefrontProductDetail;
+  product: ProductDetail;
 }
 
 export function ProductHero({ product }: ProductHeroProps) {

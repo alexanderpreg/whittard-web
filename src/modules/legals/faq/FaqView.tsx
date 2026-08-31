@@ -4,6 +4,7 @@
 import { Container } from '@/shared/components/custom-ui/Container';
 import { Heading } from '@/shared/components/custom-ui/Heading';
 import { PageBreadcrumb } from '@/shared/components/custom-ui/PageBreadcrumb';
+import { RichText } from '@/shared/components/custom-ui/rich-text';
 import { Text } from '@/shared/components/custom-ui/Text';
 import {
   Accordion,
@@ -76,10 +77,7 @@ export function FaqsView({ faqData }: FaqsViewProps) {
                     {item.question}
                   </AccordionTrigger>
                   <AccordionContent className="font-brand-avenir-lt bg-brand-white px-6 pt-5 pb-5 md:px-9">
-                    <div
-                      className="rich-text-legal text-brand-secondary text-sm leading-relaxed font-normal"
-                      dangerouslySetInnerHTML={{ __html: item.answer }}
-                    />
+                    <RichText html={item.answer} />
                   </AccordionContent>
                 </AccordionItem>
               );

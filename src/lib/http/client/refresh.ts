@@ -7,7 +7,7 @@ export async function attemptRefresh(): Promise<boolean> {
     return refreshPromise;
   }
 
-  refreshPromise = fetch(`${API_BACKEND_URL}/v1/auth/refresh`, {
+  refreshPromise = fetch(`${API_BACKEND_URL}/api/v1/auth/refresh`, {
     method: 'POST',
     credentials: 'include',
     headers: {

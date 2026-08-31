@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils';
-import type { StorefrontAttribution } from '@/modules/products/types/storefront';
+import type { Attribution } from '@/modules/products/types/catalog';
 import { AppImage } from '@/shared/components/custom-ui/app-image';
 
 interface ProductAttributeBadgesProps {
-  attributions: StorefrontAttribution[];
+  attributions: Attribution[];
   className?: string;
 }
 

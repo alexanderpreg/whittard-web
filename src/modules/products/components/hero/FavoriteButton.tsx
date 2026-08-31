@@ -3,12 +3,12 @@
 import { cn } from '@/lib/utils';
 import { DEFAULT_PRODUCT_IMAGE } from '@/modules/products/constants';
 import { useFavorites } from '@/modules/products/hooks/useFavorites';
-import type { StorefrontProductDetail } from '@/modules/products/types/storefront';
+import type { ProductDetail } from '@/modules/products/types/catalog';
 import { Heart } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface FavoriteButtonProps {
-  product: StorefrontProductDetail;
+  product: ProductDetail;
   variantId: string;
   className?: string;
 }

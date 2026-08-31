@@ -1,15 +1,15 @@
 'use client';
 
 import { cn, formatCurrency } from '@/lib/utils';
+import type { Variant } from '@/modules/products/types/catalog';
 import type { VariantGroup } from '@/modules/products/types/productDetail';
-import type { StorefrontVariant } from '@/modules/products/types/storefront';
-import { isOptionAvailable } from '@/modules/products/utils/storefront-product-detail';
+import { isOptionAvailable } from '@/modules/products/utils/product-detail';
 import { AppImage } from '@/shared/components/custom-ui/app-image';
 import { Check } from 'lucide-react';
 
 interface VariantSelectorProps {
   groups: VariantGroup[];
-  variants: StorefrontVariant[];
+  variants: Variant[];
   selectedOptions: Record<string, string>;
   onOptionChange: (groupId: string, optionId: string) => void;
 }

@@ -1,6 +1,6 @@
 import { DEFAULT_PRODUCT_IMAGE } from '../constants';
+import type { ProductCard } from '../types/catalog';
 import type { ProductCardData } from '../types/productCard';
-import type { StorefrontProductCard } from '../types/storefront';
 
 /**
  * Mapea la tarjeta del catálogo del backend al modelo de vista del frontend.
@@ -10,7 +10,7 @@ import type { StorefrontProductCard } from '../types/storefront';
  * - `effective_price` = precio final a cobrar; `price` se tacha cuando hay oferta.
  * - `available_stock` = stock - reserved_qty; `in_stock: false` no oculta el producto.
  */
-export function toProductCardData(card: StorefrontProductCard): ProductCardData {
+export function toProductCardData(card: ProductCard): ProductCardData {
   const variant = card.default_variant;
 
   const onSale =
@@ -43,6 +43,6 @@ export function toProductCardData(card: StorefrontProductCard): ProductCardData 
   };
 }
 
-export function toProductCardDataList(cards: StorefrontProductCard[]): ProductCardData[] {
+export function toProductCardDataList(cards: ProductCard[]): ProductCardData[] {
   return cards.map(toProductCardData);
 }

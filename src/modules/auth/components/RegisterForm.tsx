@@ -2,7 +2,7 @@
 
 import { Eye, EyeOff, Loader2, Lock } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -23,9 +23,10 @@ import {
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useRouter } from 'next/navigation';
 
-import { useGoogleIdentity } from '@/lib/hooks/useGoogleIdentity';
+import { useGoogleAuth } from '../hooks/useGoogleAuth';
 import { authService } from '../services/auth.service';
 import { useAuthStore } from '../store/useAuthStore';
+import { GoogleLoginButton } from './GoogleLoginButton';
 
 export const registerSchema = z
   .object({
@@ -52,31 +53,11 @@ export function RegisterForm() {
   const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
-  const { setUser, isAuthenticated } = useAuthStore();
+  const { setUser } = useAuthStore();
+  const { handleGoogle, loading: googleLoading, error: googleError } = useGoogleAuth('/');
 
-  const { renderGoogleButton, scriptLoaded } = useGoogleIdentity({
-    isAuthenticated,
-    disabled: isLoading,
-    onSuccess: async (token, picture) => {
-      setIsLoading(true);
-      setError(null);
-
-      const result = await authService.loginWithGoogle({ token });
-
-      if (!result.success) {
-        setError(result.message);
-        setIsLoading(false);
-        return;
-      }
-
-      setUser(result.data!.user, picture);
-      router.replace('/');
-    },
-  });
-
-  useEffect(() => {
-    renderGoogleButton('google-btn-register');
-  }, [renderGoogleButton, scriptLoaded]);
+  const isBusy = isLoading || googleLoading;
+  const shownError = error ?? googleError;
 
   const form = useForm<RegisterSchemaType>({
     resolver: standardSchemaResolver(registerSchema),
@@ -128,7 +109,7 @@ export function RegisterForm() {
                     {...field}
                     id={field.name}
                     placeholder="Escribe aquí"
-                    disabled={isLoading}
+                    disabled={isBusy}
                     aria-invalid={fieldState.invalid}
                   />
                 </InputGroup>
@@ -150,7 +131,7 @@ export function RegisterForm() {
                     {...field}
                     id={field.name}
                     placeholder="Escribe aquí"
-                    disabled={isLoading}
+                    disabled={isBusy}
                     aria-invalid={fieldState.invalid}
                   />
                 </InputGroup>
@@ -173,7 +154,7 @@ export function RegisterForm() {
                     id={field.name}
                     type="email"
                     placeholder="Email"
-                    disabled={isLoading}
+                    disabled={isBusy}
                     autoComplete="email"
                     aria-invalid={fieldState.invalid}
                   />
@@ -197,14 +178,14 @@ export function RegisterForm() {
                     id={field.name}
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Contraseña"
-                    disabled={isLoading}
+                    disabled={isBusy}
                   />
                   <InputGroupAddon align="inline-end">
                     <InputGroupButton
                       type="button"
                       size="icon-xs"
                       className="bg-transparent!"
-                      disabled={isLoading}
+                      disabled={isBusy}
                       onClick={() => setShowPassword((prev) => !prev)}
                     >
                       {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
@@ -230,14 +211,14 @@ export function RegisterForm() {
                     id={field.name}
                     type={showPasswordConfirmation ? 'text' : 'password'}
                     placeholder="Repetir Contraseña"
-                    disabled={isLoading}
+                    disabled={isBusy}
                   />
                   <InputGroupAddon align="inline-end">
                     <InputGroupButton
                       type="button"
                       size="icon-xs"
                       className="bg-transparent!"
-                      disabled={isLoading}
+                      disabled={isBusy}
                       onClick={() => setShowPasswordConfirmation((prev) => !prev)}
                     >
                       {showPasswordConfirmation ? (
@@ -254,14 +235,14 @@ export function RegisterForm() {
           />
         </FieldSet>
 
-        {error && <p className="text-destructive text-sm">{error}</p>}
+        {shownError && <p className="text-destructive text-sm">{shownError}</p>}
 
         <Button
           type="submit"
-          disabled={isLoading}
+          disabled={isBusy}
           className="mb-0 h-13 w-full rounded-md bg-neutral-900 text-base font-semibold text-white hover:bg-neutral-800"
         >
-          {isLoading ? (
+          {isBusy ? (
             <>
               <Loader2 className="mr-2 size-4 animate-spin" />
               Registrando...
@@ -273,7 +254,7 @@ export function RegisterForm() {
 
         <FieldSeparator className="my-8">¿Ya tienes una cuenta?</FieldSeparator>
 
-        <div id="google-btn-register" className="flex w-full justify-center" />
+        <GoogleLoginButton onSuccess={handleGoogle} />
 
         <Button
           type="button"

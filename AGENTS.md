@@ -33,7 +33,7 @@ Pre-commit runs `prettier --write .` → `eslint . --fix`. Pre-push runs `typech
 
 ```
 src/
-  app/              # App Router pages — route group (store) wraps all storefront routes
+  app/              # App Router pages — route group (store) wraps all shop routes
   modules/          # 8 business domains: auth, contact, delivery-returns, home, legals, products, recipes, taste
   shared/           # shared UI components (custom-ui, shadcn-ui), layouts (footer/header), navigation
   lib/              # utils, hooks, http client/server, adapters (scaffold), types
