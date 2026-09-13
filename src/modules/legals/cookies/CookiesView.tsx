@@ -3,16 +3,16 @@ import { PageHeroBanner } from '@/shared/components/custom-ui/PageHeroBanner';
 import { RichText } from '@/shared/components/custom-ui/rich-text';
 import { Text } from '@/shared/components/custom-ui/Text';
 
-export interface TermsViewProps {
+export interface CookiesViewProps {
   title?: string;
   subtitle?: string;
   htmlContent?: string;
 }
 
-export function TermsView({ title, subtitle, htmlContent }: TermsViewProps) {
+export function CookiesView({ title, subtitle, htmlContent }: CookiesViewProps) {
   return (
     <Container as="main" size="full" className="mb-14 flex-1 space-y-14">
-      <PageHeroBanner title={title || 'Términos y Condiciones'} imageUrl="/banner-static.png" />
+      <PageHeroBanner title={title || 'Política de Cookies'} imageUrl="/banner-static.png" />
 
       <Container className="space-y-6">
         {subtitle && (

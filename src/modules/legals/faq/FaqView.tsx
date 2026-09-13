@@ -1,4 +1,3 @@
-// modules/legals/faqs/FaqsView.tsx
 'use client';
 
 import { Container } from '@/shared/components/custom-ui/Container';
@@ -13,31 +12,33 @@ import {
   AccordionTrigger,
 } from '@/shared/components/shadcn-ui/accordion';
 
-interface FAQQuestion {
+export interface FAQItem {
+  order?: number;
   question: string;
   answer: string;
 }
 
-interface FAQContent {
+export interface FAQSectionContent {
+  is_visible?: boolean;
   title?: string;
+  subtitle?: string;
   description?: string;
-  questions?: FAQQuestion[];
+  items?: FAQItem[];
 }
 
 interface FaqsViewProps {
-  faqData?: {
-    content?: FAQContent;
-  };
+  faqData?: FAQSectionContent;
 }
 
 const FAQ_BREADCRUMBS = [{ label: 'Inicio', href: '/' }, { label: 'Preguntas Frecuentes' }];
 
 export function FaqsView({ faqData }: FaqsViewProps) {
-  const title = faqData?.content?.title || 'Preguntas Frecuentes';
+  const title = faqData?.title || 'Preguntas Frecuentes';
   const description =
-    faqData?.content?.description ||
-    '¿Tienes una pregunta? Mira nuestras preguntas más frecuentes en la parte inferior. No dudes contactarnos si estás buscando algo en específico. Estamos para resolverlo.';
-  const questions = faqData?.content?.questions || [];
+    faqData?.subtitle ||
+    faqData?.description ||
+    '¿Tienes una pregunta? Mira nuestras preguntas más frecuentes en la parte inferior. No dudes en contactarnos si estás buscando algo en específico.';
+  const questions = faqData?.items || [];
   const hasQuestions = questions.length > 0;
 
   return (
