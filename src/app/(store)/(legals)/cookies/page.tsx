@@ -1,26 +1,27 @@
 import { buildSeoMetadata } from '@/lib/seo';
 import { ContentService } from '@/modules/content/services/content.service';
 import { LegalPageContent } from '@/modules/content/types/legals';
-import { TermsView } from '@/modules/legals/terms/TermsView';
+import { CookiesView } from '@/modules/legals/cookies/CookiesView';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata = buildSeoMetadata({
   defaults: {
-    title: 'Términos y Condiciones',
-    description: 'Términos y condiciones de uso y compra en www.whittardperu.com.',
+    title: 'Política de Cookies',
+    description:
+      'Información sobre el uso de cookies y tecnologías similares en www.whittardperu.com.',
   },
 });
 
 export default async function Page() {
   const content = await ContentService.getPageContent<LegalPageContent>('legal');
-  const termsData = content['terms-and-conditions'];
+  const cookiesData = content['cookie-policy'];
 
   return (
-    <TermsView
-      title={termsData?.title}
-      subtitle={termsData?.subtitle}
-      htmlContent={termsData?.body ?? ''}
+    <CookiesView
+      title={cookiesData?.title}
+      subtitle={cookiesData?.subtitle}
+      htmlContent={cookiesData?.body ?? ''}
     />
   );
 }

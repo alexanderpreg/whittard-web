@@ -1,10 +1,15 @@
+import { ComplaintsBookSection } from '@/modules/content/types/legals';
 import { Container } from '@/shared/components/custom-ui/Container';
 import { Heading } from '@/shared/components/custom-ui/Heading';
 import { Text } from '@/shared/components/custom-ui/Text';
 import { ClaimsBookForm } from './components/ClaimsBookForm';
 import type { ClaimsBookContent } from './types/claims-book';
 
-const CLAIMS_CONTENT: ClaimsBookContent = {
+interface ClaimsBookViewProps {
+  content?: ComplaintsBookSection;
+}
+
+const DEFAULT_CLAIMS_CONTENT: ClaimsBookContent = {
   subtitle: 'OBSERVACIONES Y ACCIONES ADOPTADAS POR EL PROVEEDOR:',
   paragraph: `
     <p>*El plazo máximo de atención es de 30 días calendario desde su presentación, el cual podrá extenderse excepcionalmente de acuerdo a la complejidad del reclamo o queja lo cual será informado oportunamente mediante un previo aviso al USUARIO.</p>
@@ -26,7 +31,18 @@ const CLAIMS_CONTENT: ClaimsBookContent = {
   ],
 };
 
-export function ClaimsBookView() {
+export function ClaimsBookView({ content }: ClaimsBookViewProps) {
+  // Si desde el backend se configuró is_visible en false, deshabilitamos la vista
+  if (content?.is_visible === false) {
+    return null;
+  }
+
+  // Fusionamos los datos dinámicos recibidos del backend con el fallback estático
+  const formContent: ClaimsBookContent = {
+    ...DEFAULT_CLAIMS_CONTENT,
+    paragraph: content?.observations || content?.paragraph || DEFAULT_CLAIMS_CONTENT.paragraph,
+  };
+
   return (
     <Container as="main" size="full" className="mb-8 flex-1">
       <Container className="mt-14 mb-14 space-y-5">
@@ -35,21 +51,29 @@ export function ClaimsBookView() {
           variant="heading"
           className="font-brand-elephant text-brand-primary text-3xl"
         >
-          Libro de Reclamaciones
+          {content?.title || 'Libro de Reclamaciones'}
         </Heading>
 
-        <Text
-          variant="body"
-          className="text-brand-secondary max-w-none text-sm leading-relaxed font-light"
-        >
-          We ask that you read this privacy notice carefully as it contains important information on
-          who we are, how and why we collect, store, use and share personal information, your rights
-          in relation to your personal information and on how to contact us and supervisory
-          authorities in the event you have a complaint.
-        </Text>
+        {content?.paragraph ? (
+          <Text
+            variant="body"
+            className="text-brand-secondary max-w-none text-sm leading-relaxed font-light"
+          >
+            {content.paragraph}
+          </Text>
+        ) : (
+          <Text
+            variant="body"
+            className="text-brand-secondary max-w-none text-sm leading-relaxed font-light"
+          >
+            Con el objetivo de brindarle un mejor servicio, ponemos a su disposición nuestro Libro
+            de Reclamaciones Virtual. Por favor, complete los datos requeridos para procesar su
+            solicitud.
+          </Text>
+        )}
 
         <div className="pt-4">
-          <ClaimsBookForm content={CLAIMS_CONTENT} />
+          <ClaimsBookForm content={formContent} />
         </div>
       </Container>
     </Container>
